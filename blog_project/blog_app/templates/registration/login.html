@@ -1,14 +1,25 @@
-{% load static %}
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    로그인 페이지
-    <br/>
-    <a href="{% url 'signup' %}">회원가입 페이지로 이동</a>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="{% static 'css/login.css' %}" rel="stylesheet" />
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="main_container">
+      <div class="login_text">Login</div>
+
+      <div class="login_container">
+        <input placeholder="username" type="text" id="userId" class="underline" /><br />
+        <input placeholder="password" type="password" id="pwd" class="underline" />
+        <a href="#" class="login_btn" id="loginBtn">Login</a>
+      </div>
+      <div class="func_container">
+        <a href="{% url 'signup'%}" class="register_btn" id="registerBtn">Register</a>
+        <a href="#" class="find_pwd" id="findPwd">Forgot password?</a>
+      </div>
+    </div>
+  </body>
 </html>
