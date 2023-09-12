@@ -12,13 +12,17 @@
             <div class="login_text">Login</div>
 
             <div class="login_container">
-                <input placeholder="username" type="text" id="userId" class="underline" /><br />
-                <input placeholder="password" type="password" id="pwd" class="underline" />
-                <a href="#" class="login_btn" id="loginBtn">Login</a>
+                {% if error %}
+                <div class="error_message">{{ error }}</div>
+                {% endif %}
+
+                <input placeholder="username" type="text" id="userId" required /><br />
+                <input placeholder="password" type="password" id="pwd" required />
+                <a href="{%url 'board_admin'%}" class="login_btn" id="loginBtn">Login</a>
             </div>
             <div class="func_container">
                 <a href="{% url 'signup'%}" class="signup_btn" id="signupBtn">SignUp</a>
-                <a href="#" class="find_pwd" id="findPwd">Forgot password?</a>
+                <a href="{% url 'find_password'%}" class="find_pwd" id="findPwd">Forgot password?</a>
             </div>
         </div>
     </body>
