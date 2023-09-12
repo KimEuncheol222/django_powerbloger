@@ -48,7 +48,7 @@ def signup_view(request):
             user.save()
             return redirect('login')
 
-    return render(request, 'blog_app/signup.html')
+    return render(request, 'registration/signup.html')
 
 def find_password(request):
     if request.method == 'POST':
@@ -59,8 +59,8 @@ def find_password(request):
             return redirect('new_password', username=username)
         except User.DoesNotExist:
             # 사용자가 존재하지 않는 경우에 대한 처리
-            return render(request, 'blog_app/find_password', {'new_error':'ID와 전화번호를 확인해주세요.'})
-    return render(request, 'find_password.html')
+            return render(request, 'registration/find_password.html', {'new_error':'ID와 전화번호를 확인해주세요.'})
+    return render(request, 'registration/find_password.html')
 
 def new_password(request, username):
     user = User.objects.get(username=username)
@@ -73,8 +73,8 @@ def new_password(request, username):
             return redirect('login')  # 비밀번호 재설정 후 로그인 페이지로 이동
         else:
             # 비밀번호가 일치하지 않을 때의 처리
-            return render(request, 'blog_app/new_password', {'password_error':'비밀번호가 일치하지 않습니다.'})
-    return render(request, 'new_password.html')
+            return render(request, 'registration/new_password.html', {'password_error':'비밀번호가 일치하지 않습니다.'})
+    return render(request, 'registration/new_password.html')
 
 def board_client(request):
     return render(request, 'blog_app/board_client.html')
