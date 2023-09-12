@@ -25,7 +25,7 @@ def logout_view(request):
     if request.method == 'POST':
         auth.logout(request)
         return redirect('login')
-    return render(request, 'blog_app/login.html')
+    return render(request, 'registration/login.html')
 
 # 회원가입 views
 
