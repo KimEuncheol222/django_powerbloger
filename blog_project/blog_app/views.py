@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.shortcuts import render, redirect
-from .models import User
 
 # 로그인 views
 def login_view(request):
