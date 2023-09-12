@@ -55,15 +55,15 @@ def find_password(request):
         username = request.POST['username']
         phone_number = request.POST['phone_number']
         try:
-            user = User.objects.get(username=username, phone_number=phone_number)
+            user = CustomUser.objects.get(username=username, phone_number=phone_number)
             return redirect('new_password', username=username)
-        except User.DoesNotExist:
+        except CustomUser.DoesNotExist:
             # 사용자가 존재하지 않는 경우에 대한 처리
             return render(request, 'registration/find_password.html', {'new_error':'ID와 전화번호를 확인해주세요.'})
     return render(request, 'registration/find_password.html')
 
 def new_password(request, username):
-    user = User.objects.get(username=username)
+    user = CustomUser.objects.get(username=username)
     if request.method == 'POST':
         password = request.POST['password']
         password_confirm = request.POST['password_confirm']
