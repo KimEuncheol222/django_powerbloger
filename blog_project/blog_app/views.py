@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 # 로그인 views
 def login_view(request):
     # POST요청이 들어온다면
-    if request.mothod == 'POST':
+    if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = auth.authenticate(request, username=username, password=password)
