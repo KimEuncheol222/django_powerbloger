@@ -14,9 +14,9 @@ def login_view(request):
             auth.login(request, user)
             return redirect('board_client')
         else:
-            return render(request, 'blog_app/signup.html', {'error':'ID와 password를 확인해주세요.'})
+            return render(request, 'registration/signup.html', {'error':'ID와 password를 확인해주세요.'})
         
-    return render(request, 'blog_app/login.html')
+    return render(request, 'registration/login.html')
 
 # 로그아웃 views
 def logout_view(request):
@@ -51,7 +51,7 @@ def signup_view(request):
             # 직접 로그인 시키기
         return redirect('login')
 
-    return render(request, 'blog_app/signup.html')
+    return render(request, 'registration/signup.html')
 
 def board_client(request):
     return render(request, 'blog_app/board_client.html')
