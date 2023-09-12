@@ -12,7 +12,7 @@ def login_view(request):
         # 해당 유저가 존재한다면
         if user is not None:
             auth.login(request, user)
-            return redirect('user:home')
+            return redirect('board_client')
         else:
             return render(request, 'myapp/signin.html', {'error':'ID와 password를 확인해주세요.'})
         
@@ -23,7 +23,7 @@ def logout_view(request):
     # 로그아웃 성공시 로그인 화면으로
     if request.method == 'POST':
         auth.logout(request)
-        return redirect('user:login')
+        return redirect('login')
     return render(request, 'blog_app/login.html')
 
 # 회원가입 views
@@ -49,7 +49,7 @@ def signup_view(request):
             # 회원가입시 자동 로그인
             # auth.login(request, user)
             # 직접 로그인 시키기
-        return redirect('user:login')
+        return redirect('login')
 
     return render(request, 'blog_app/signup.html')
 
