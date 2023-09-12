@@ -14,7 +14,7 @@ def login_view(request):
             auth.login(request, user)
             return redirect('board_client')
         else:
-            return render(request, 'myapp/signin.html', {'error':'ID와 password를 확인해주세요.'})
+            return render(request, 'blog_app/signup.html', {'error':'ID와 password를 확인해주세요.'})
         
     return render(request, 'blog_app/login.html')
 
