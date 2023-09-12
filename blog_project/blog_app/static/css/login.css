@@ -86,7 +86,7 @@ input::placeholder {
   font-size: 14px;
 }
 
-.register_btn,
+.signup_btn,
 .find_pwd {
   text-decoration: none;
   position: relative;
@@ -95,7 +95,7 @@ input::placeholder {
   margin-top: 10px;
 }
 
-.register_btn::after,
+.signup_btn::after,
 .find_pwd::after {
   content: "";
   display: block;
@@ -110,7 +110,7 @@ input::placeholder {
   transition: transform 0.3s ease;
 }
 
-.register_btn:hover::after,
+.signup_btn:hover::after,
 .find_pwd:hover::after {
   transform: scaleX(1);
 }
