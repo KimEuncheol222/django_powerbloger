@@ -4,9 +4,23 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Signup</title>
+        <link href="{% static 'css/signup.css' %}" rel="stylesheet" />
+        <title>SignUp</title>
     </head>
     <body>
-        회원가입 페이지
+        <div class="main_container">
+            <div class="signup_text">SignUp</div>
+
+            <div class="signup_container">
+                <input placeholder="username" type="text" id="userName" required /><br />
+                <input placeholder="password" type="password" id="pwd" required /><br />
+                <input placeholder="password confirm" type="password" id="pwdConfirm" required /><br />
+                <input placeholder="e-mail" type="email" id="eMail" required /><br />
+                <input placeholder="first name" type="text" id="firstName" required /><br />
+                <input placeholder="last name" type="text" id="lastName" required /><br />
+                <input placeholder="phone number" type="text" id="phoneNumber" required />
+                <a href="{% url 'login'%}" class="confirm_btn" id="confirmBtn">Confirm</a>
+            </div>
+        </div>
     </body>
 </html>
