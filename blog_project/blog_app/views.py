@@ -87,3 +87,9 @@ def post(request):
 
 def write(request):
     return render(request, 'blog_app/write.html')
+
+def find_password(request):
+    return render(request, 'registration/find_password.html')
+
+def new_password(request):
+    return render(request, 'registration/new_password.html')
