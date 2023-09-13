@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib import auth
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import CustomUser, BlogPost
 from .serializers import BlogPostSerializer
 from .forms import BlogPostForm, BlogPost
@@ -84,8 +84,9 @@ def new_password(request, username):
 def board(request):
     return render(request, 'blog_app/board.html')
 
-def post(request):
-    return render(request, 'blog_app/post.html')
+def post(request, post_id):
+    post = get_object_or_404(BlogPost, pk=post_id)  # 해당 포스트를 가져오거나 404 에러 반환
+    return render(request, 'blog_app/post.html', {'post': post})
 
 def write(request):
     if request.method == 'POST':

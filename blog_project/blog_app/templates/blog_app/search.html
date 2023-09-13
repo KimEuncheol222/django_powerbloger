@@ -22,7 +22,7 @@
         <div class="search-results">
             <h1>검색 결과</h1>
             {% if results %}
-                <p class="result-count">총 <strong>{{ results|length }}</strong>의 포스트를 찾았습니다.</p>
+                <p class="result-count">총 <strong>{{ results|length }}</strong>개의 포스트를 찾았습니다.</p>
                 {% for post in results %}
                     <div class="post">
                         <h2><a href="{% url 'post' post.id %}">{{ post.title }}</a></h2>
