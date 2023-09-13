@@ -19,7 +19,7 @@
             <div>Just Write!</div>
         </header>
         <section>
-            <form action='board' method="post">
+            <form method="post" action="{% url 'post' %}">
                 {% csrf_token %}
                 {{ form.as_table }}
                 <button type="submit">등록</button>
