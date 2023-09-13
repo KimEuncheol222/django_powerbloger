@@ -19,10 +19,7 @@
                     <button class="login_btn" type="submit" id="loginBtn">Login</button>
                 </div>
                 {% if error %}
-            <div>
-                <strong>Error:</strong> {{ error }}
-            </div>
-                </div>
+                <div><strong>Error:</strong> {{ error }}</div>
                 {% endif %}
                 <div class="func_container">
                     <a href="{% url 'signup'%}" class="signup_btn" id="signupBtn">SignUp</a>
