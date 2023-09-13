@@ -4,9 +4,62 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
+        <link href="{% static 'css/write.css' %}" rel="stylesheet" />
+        <title>Write</title>
     </head>
     <body>
-        글 작성하는 페이지
+        <header>
+            <div>MYLOG</div>
+            <div>일상</div>
+            <div>요리</div>
+            <div>여행</div>
+            <div>영화</div>
+            <div>IT</div>
+            <div>Logout</div>
+            <div>Just Write!</div>
+        </header>
+        <section>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">등록</button>
+            </form>
+            {% comment %} <main>
+                <form method="post">
+                    {% csrf_token %}
+                    <input id="title" type="text" name="title" placeholder="제목">
+                    <textarea id="content" name="content" placeholder="내용"></textarea>
+                </form>
+            </main>
+            <figure>
+                <div>AI 글 자동완성</div>
+                <form method="post">
+                    <div>TOPIC</div>
+                    {% csrf_token %}
+                    <input type="radio" id="topic1" name="topic" value="일상">
+                    <label for="topic1">일상</label>
+                    <input type="radio" id="topic2" name="topic" value="요리">
+                    <label for="topic2">요리</label>
+                    <input type="radio" id="topic3" name="topic" value="여행">
+                    <label for="topic3">여행</label>
+                    <input type="radio" id="topic4" name="topic" value="영화">
+                    <label for="topic4">영화</label>
+                    <input type="radio" id="topic5" name="topic" value="IT/전자기기">
+                    <label for="topic5">IT/전자기기</label>
+                </form>
+
+                <div>
+                    <div>UPLOAD INFO</div>
+                    <div>상태: </div>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div>이미지 업로드</div>
+                        <input type="file" accept="image/*">
+                    </form>
+                    <button type="submit">임시저장</button>
+                    <button type="submit">글 작성</button>
+                </div>
+            </figure> {% endcomment %}
+        </section>
     </body>
 </html>
