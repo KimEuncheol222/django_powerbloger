@@ -12,4 +12,5 @@ urlpatterns = [
     path('write/', views.write, name='write'),
     path('find_password/', views.find_password, name='find_password'),
     path('new_password/', views.new_password, name='new_password'),
+    path('search/', views.search_view, name='search'),
 ]

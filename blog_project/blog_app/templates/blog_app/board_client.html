@@ -1,14 +1,23 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-    </head>
-    <body>
-        일반 유저가 보는 화면 페이지입니다.
-        <br />
-        <a href="{% url 'login' %}">로그인 페이지로 이동</a>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 검색 폼 시작 -->
+    <form method="get" action="{% url 'search' %}">
+        {% csrf_token %}
+        <button type="submit">검색</button>
+    </form>
+    <!-- 검색 폼 종료 -->
+
+    <!-- 검색 버튼만 표시하고 검색 결과는 표시하지 않음 -->
+    
+    일반 유저가 보는 화면 페이지입니다.
+    <br>
+    <a href="{% url 'login' %}">로그인 페이지로 이동</a>
+</body>
 </html>

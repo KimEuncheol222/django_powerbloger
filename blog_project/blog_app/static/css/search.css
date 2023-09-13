@@ -1,0 +1,90 @@
+/* Reset some default browser styles */
+body, h1, h2, h3, p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-form label {
+    font-weight: bold;
+}
+
+#keyword {
+    padding: 10px;
+    width: 70%;
+    border: 1px solid #ccc;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.search-results {
+    margin-top: 20px;
+}
+
+.search-results h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.search-results-list {
+    list-style: none;
+    padding: 0;
+}
+
+.search-result-item {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-result-item h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.search-result-item p {
+    font-size: 16px;
+    color: #555;
+}
+
+.no-results-message {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
+    color: #777;
+}
+
+/* 검색창 크기 조정 */
+.search-form input[type="text"] {
+    width: 300px; /* 원하는 크기로 조정 */
+}
+
+/* 검색 결과 개수 스타일 */
+.result-count {
+    font-weight: bold; /* 숫자를 굵게 표시 */
+}
