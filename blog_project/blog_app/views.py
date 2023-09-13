@@ -40,14 +40,15 @@ def signup_view(request):
             email = request.POST['email']
             phone_number = request.POST['phone_number']
 
-            user = CustomUser.objects.create_user(username=username, email=email, password=password)
-            user.password_confirm = password_confirm
-            user.last_name = last_name
-            user.first_name = first_name
-            user.phone_number = phone_number
-            user.save()
-            return redirect('login')
-
+            try:
+                user = CustomUser.objects.create_user(username=username, email=email, password=password)
+                user.last_name = last_name
+                user.first_name = first_name
+                user.phone_number = phone_number
+                user.save()
+                return redirect('login')
+            except Exception:
+                return render(request, 'registration/signup.html', {'signup_error': '입력이 잘못됐습니다.'})
     return render(request, 'registration/signup.html')
 
 def find_password(request):
