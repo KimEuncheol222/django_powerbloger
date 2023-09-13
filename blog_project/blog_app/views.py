@@ -15,7 +15,7 @@ def login_view(request):
         # 해당 유저가 존재한다면
         if user is not None:
             auth.login(request, user)
-            return redirect('board_client')
+            return redirect('board')
         else:
             return render(request, 'registration/login.html', {'error':'ID와 password를 확인해주세요.'})
         
@@ -79,11 +79,8 @@ def new_password(request, username):
             return render(request, 'registration/new_password.html', {'password_error':'비밀번호가 일치하지 않습니다.'})
     return render(request, 'registration/new_password.html')
 
-def board_client(request):
-    return render(request, 'blog_app/board_client.html')
-
-def board_admin(request):
-    return render(request, 'blog_app/board_admin.html')
+def board(request):
+    return render(request, 'blog_app/board.html')
 
 def post(request):
     return render(request, 'blog_app/post.html')
