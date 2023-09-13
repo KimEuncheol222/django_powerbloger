@@ -90,13 +90,13 @@ def post(request, post_id):
 
 def write(request):
     if request.method == 'POST':
-        form = BlogPostForm(request.POST)
-        if form.is_valid():
-            form.save()
+        write_form = BlogPostForm(request.POST)
+        if write_form.is_valid():
+            write_form.save()
             return redirect('post')   
     else:
-        form = BlogPostForm()
-    return render(request, 'blog_app/write.html', {'form': form})
+        write_form = BlogPostForm()
+    return render(request, 'blog_app/write.html', {'write_form': write_form})
 
 
 def find_password(request):
