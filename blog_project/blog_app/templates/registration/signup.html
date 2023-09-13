@@ -8,19 +8,25 @@
         <title>SignUp</title>
     </head>
     <body>
-        <div class="main_container">
-            <div class="signup_text">SignUp</div>
+        <form action="{%url 'signup' %}" method="post">
+            {% csrf_token %}
+            <div class="main_container">
+                <div class="signup_text">SignUp</div>
 
-            <div class="signup_container">
-                <input placeholder="username" type="text" id="userName" required /><br />
-                <input placeholder="password" type="password" id="pwd" required /><br />
-                <input placeholder="password confirm" type="password" id="pwdConfirm" required /><br />
-                <input placeholder="e-mail" type="email" id="eMail" required /><br />
-                <input placeholder="first name" type="text" id="firstName" required /><br />
-                <input placeholder="last name" type="text" id="lastName" required /><br />
-                <input placeholder="phone number" type="text" id="phoneNumber" required />
-                <a href="{% url 'login'%}" class="confirm_btn" id="confirmBtn">Confirm</a>
+                <div class="signup_container">
+                    <input placeholder="username" type="text" id="userName" name="username" required /><br />
+                    <input placeholder="password" type="password" id="pwd" name="password" required /><br />
+                    <input placeholder="password confirm" type="password" id="pwdConfirm" name="password_confirm" required /><br />
+                    <input placeholder="e-mail" type="email" id="eMail" name="email" required /><br />
+                    <input placeholder="first name" type="text" id="firstName" name="first_name" name="" required /><br />
+                    <input placeholder="last name" type="text" id="lastName" name="last_name" required /><br />
+                    <input placeholder="phone number" type="text" id="phoneNumber" name="phone_number" required />
+                    <button class="confirm_btn" type="submit" id="confirmBtn">Confirm</button>
+                </div>
+                {% if signup_error %}
+                <div><strong>Error:</strong> {{ signup_error }}</div>
+                {% endif %}
             </div>
-        </div>
+        </form>
     </body>
 </html>
