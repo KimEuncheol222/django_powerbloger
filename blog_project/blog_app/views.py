@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.shortcuts import render, redirect
-from .models import CustomUser
+from .models import CustomUser, BlogPost
 
 # 로그인 views
 def login_view(request):
@@ -86,7 +86,17 @@ def post(request):
     return render(request, 'blog_app/post.html')
 
 def write(request):
+    if request.method == 'POST':
+        title = request.POST['title']
+        content = request.POST['content']
+        topic = request.POST['topic']
+        image = request.POST['image']
+        
+        BlogPost.objects.create(title=title, content=content, topic=topic, image=image)
+        return redirect('post')
+    
     return render(request, 'blog_app/write.html')
+
 
 def find_password(request):
     return render(request, 'registration/find_password.html')
