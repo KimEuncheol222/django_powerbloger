@@ -19,7 +19,12 @@
             <div>Just Write!</div>
         </header>
         <section>
-            <main>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">등록</button>
+            </form>
+            {% comment %} <main>
                 <form method="post">
                     {% csrf_token %}
                     <input id="title" type="text" name="title" placeholder="제목">
@@ -54,8 +59,7 @@
                     <button type="submit">임시저장</button>
                     <button type="submit">글 작성</button>
                 </div>
-            </figure>
-            
+            </figure> {% endcomment %}
         </section>
     </body>
 </html>

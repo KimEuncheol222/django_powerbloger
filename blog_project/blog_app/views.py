@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from django.shortcuts import render, redirect
 from .models import CustomUser, BlogPost
+from .serializers import BlogPostSerializer
+from .forms import BlogPostForm
 
 # 로그인 views
 def login_view(request):
@@ -87,15 +89,13 @@ def post(request):
 
 def write(request):
     if request.method == 'POST':
-        title = request.POST['title']
-        content = request.POST['content']
-        topic = request.POST['topic']
-        image = request.POST['image']
-        
-        BlogPost.objects.create(title=title, content=content, topic=topic, image=image)
-        return redirect('post')
-    
-    return render(request, 'blog_app/write.html')
+        form = BlogPostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('post')   
+    else:
+        form = BlogPostForm()
+    return render(request, 'blog_app/write.html', {'form': form})
 
 
 def find_password(request):
