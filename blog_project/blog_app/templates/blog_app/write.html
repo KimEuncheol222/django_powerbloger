@@ -19,9 +19,9 @@
             <div>Just Write!</div>
         </header>
         <section>
-            <form method="post">
+            <form action='board' method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ form.as_table }}
                 <button type="submit">등록</button>
             </form>
             {% comment %} <main>
