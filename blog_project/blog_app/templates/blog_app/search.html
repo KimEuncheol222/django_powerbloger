@@ -4,9 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="{% static 'css/search.css' %}" rel="stylesheet" />
+    <title>검색 결과</title>
 </head>
 <body>
-    
+    <div class="container">
+        <!-- 검색 폼 시작 -->
+        <div class="search-form">
+            <form method="get" action="{% url 'search' %}">
+                {% csrf_token %}
+                <label for="keyword">검색어:</label>
+                <input type="text" id="keyword" name="keyword" placeholder="제목 또는 본문내용을 검색해주세요">
+                <button type="submit">검색</button>
+            </form>
+        </div>
+        <!-- 검색 결과 표시 -->
+        <div class="search-results">
+            <h1>검색 결과</h1>
+            {% if results %}
+                <p class="result-count">총 <strong>{{ results|length }}</strong>의 포스트를 찾았습니다.</p>
+                {% for post in results %}
+                    <div class="post">
+                        <h2><a href="{% url 'post' post.id %}">{{ post.title }}</a></h2>
+                        <p>{{ post.content }}</p>
+                    </div>
+                {% empty %}
+                    <p>검색 결과가 없습니다.</p>
+                {% endfor %}
+            {% else %}
+                <p>검색 결과가 없습니다.</p> 
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>

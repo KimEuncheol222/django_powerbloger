@@ -25,6 +25,10 @@
             <a href="{% url 'login' %}">Login</a>
             {% endif %}
         </form>
+        <form method="get" action="{% url 'search' %}">
+            {% csrf_token %}
+            <button type="submit">검색</button>
+        </form>
     </header>
 </body>
 </html>
