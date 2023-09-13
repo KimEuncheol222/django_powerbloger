@@ -7,15 +7,15 @@ from .models import CustomUser
 def login_view(request):
     # POST요청이 들어온다면
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = auth.authenticate(request, username=username, password=password)
         # 해당 유저가 존재한다면
         if user is not None:
             auth.login(request, user)
             return redirect('board_client')
         else:
-            return render(request, 'registration/signup.html', {'error':'ID와 password를 확인해주세요.'})
+            return render(request, 'registration/login.html', {'error':'ID와 password를 확인해주세요.'})
         
     return render(request, 'registration/login.html')
 
