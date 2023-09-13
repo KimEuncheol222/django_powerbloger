@@ -1,9 +1,11 @@
 from django.contrib.auth.models import User
 from django.contrib import auth
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import CustomUser, BlogPost
 from .serializers import BlogPostSerializer
-from .forms import BlogPostForm
+from .forms import BlogPostForm, BlogPost
+from django.db.models import Q
+from .forms import SearchForm
 
 # 로그인 views
 def login_view(request):
@@ -82,8 +84,9 @@ def new_password(request, username):
 def board(request):
     return render(request, 'blog_app/board.html')
 
-def post(request):
-    return render(request, 'blog_app/post.html')
+def post(request, post_id):
+    post = get_object_or_404(BlogPost, pk=post_id)  # 해당 포스트를 가져오거나 404 에러 반환
+    return render(request, 'blog_app/post.html', {'post': post})
 
 def write(request):
     if request.method == 'POST':
@@ -101,3 +104,15 @@ def find_password(request):
 
 def new_password(request):
     return render(request, 'registration/new_password.html')
+
+
+# 작성된 게시글 키워드 검색기능
+def search_view(request):
+    if request.method == 'GET':
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            keyword = form.cleaned_data['keyword']
+            # 제목 또는 본문 내용에 키워드를 포함하는 게시글을 검색합니다.
+            results = BlogPost.objects.filter(Q(title__icontains=keyword) | Q(content__icontains=keyword))
+            return render(request, 'blog_app/search.html', {'results': results})
+    return render(request, 'blog_app/search.html', {'results': []})
