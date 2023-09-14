@@ -94,7 +94,7 @@ def write(request):
         if write_form.is_valid():
             blog_post = write_form.save(commit=False)
             blog_post.author = request.user
-            blog_post.is_draft = True
+            blog_post.is_draft = False
             blog_post.save()
             return redirect('post')   
     else:
