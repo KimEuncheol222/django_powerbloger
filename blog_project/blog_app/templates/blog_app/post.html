@@ -8,5 +8,16 @@
     </head>
     <body>
         이전 페이지에서 클릭한 게시글 상세 페이지
+
+        <div>
+            <div class="post-info">
+                <h5>{{ post.created_at }} </h5>
+                <h1>{{ post.title }}</h1>
+                <h5>author: {{ post.author_id }}</h5>
+                <h5 class="topic-box">topic: {{ post.topic }}</h5>
+            </div>
+            <div class="post-content">content: {{ post.content | safe }}</div>
+        </div>
+
     </body>
 </html>

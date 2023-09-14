@@ -86,7 +86,12 @@ def board(request):
 
 def post(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id)  # 해당 포스트를 가져오거나 404 에러 반환
-    return render(request, 'blog_app/post.html', {'post': post})
+
+    context = {
+        'post': post,
+    }
+
+    return render(request, 'blog_app/post.html', context)
 
 def write(request):
     if request.method == 'POST':
@@ -96,7 +101,7 @@ def write(request):
             blog_post.author = request.user
             blog_post.is_draft = False
             blog_post.save()
-            return redirect('post')   
+            return redirect('post', post_id=blog_post.id)   
     else:
         write_form = BlogPostForm(initial={'is_draft': False})
 
