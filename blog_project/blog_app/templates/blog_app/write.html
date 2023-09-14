@@ -5,6 +5,8 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="{% static 'css/write.css' %}" rel="stylesheet" />
+        <link href="{% static 'summernote/summernote.css' %}" rel="stylesheet">
+        <script src="{% static 'summernote/summernote.js' %}"></script>
         <title>Write</title>
     </head>
     <body>
@@ -26,4 +28,9 @@
             </form>
         </section>
     </body>
+    <script>
+        $(document).ready(function() {
+        $('#id_content').summernote();  // content 필드에 Summernote 적용
+        });
+    </script>
 </html>
