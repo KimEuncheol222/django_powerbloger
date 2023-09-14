@@ -4,6 +4,8 @@
     padding: 0;
 }
 
+/* header */
+
 header {
     display: flex;
     align-items: center;
@@ -18,8 +20,8 @@ header {
     text-decoration: none;
 }
 
-form {
-    width: 90%;
+.header_form {
+    width: 80%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -42,6 +44,13 @@ form {
     display: flex;
     align-items: center;
     gap: 56px;
+}
+
+.search_image {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
 }
 
 .right_container {
@@ -167,6 +176,111 @@ a {
 .row_box {
     display: flex;
     align-items: center;
-    margin-left: 20px;
-    gap: 20px;
+    margin-left: 60px;
+    gap: 30px;
+}
+
+.test_container {
+    background-color: blue;
+    color: red;
+}
+
+/* section */
+
+/* main */
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 415px;
+    position: relative;
+    top: 0;
+    background-color: #1e1e1e;
+    width: 100%;
+    z-index: 998;
+    color: #f9f8f4;
+    text-decoration: none;
+}
+
+.main_form {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin: auto;
+}
+
+.main_container {
+    width: 1920px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.main_left_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 997;
+    width: 50%;
+    flex: 0 0 768px;
+    height: 100%;
+    animation: fade-in 4s;
+    overflow: visible;
+    white-space: wrap;
+}
+
+.main_title {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.main_contents {
+    display: block;
+    font-size: 13px;
+    line-height: 25px;
+}
+
+.readmore_btn {
+    margin-top: 100px;
+    width: 108px;
+    height: 39px;
+    background-color: #3a3a3a;
+    color: #fff;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.main_right_container {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 996;
+    animation: fade-in 8s;
+}
+
+.main_image {
+    width: 600px;
+    height: 343px;
+    opacity: 40%;
+    display: flex;
+    align-items: flex-end;
+    position: absolute;
+}
+
+/* keyframes */
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
