@@ -85,18 +85,23 @@ def board(request):
     return render(request, 'blog_app/board.html')
 
 def post(request, post_id):
-    post = get_object_or_404(BlogPost, pk=post_id)  # 해당 포스트를 가져오거나 404 에러 반환
+    post = get_object_or_404(BlogPost, id=post_id)  # 해당 포스트를 가져오거나 404 에러 반환
     return render(request, 'blog_app/post.html', {'post': post})
 
 def write(request):
     if request.method == 'POST':
         write_form = BlogPostForm(request.POST)
         if write_form.is_valid():
-            write_form.save()
+            blog_post = write_form.save(commit=False)
+            blog_post.author = request.user
+            blog_post.is_draft = False
+            blog_post.save()
             return redirect('post')   
     else:
-        write_form = BlogPostForm()
+        write_form = BlogPostForm(initial={'is_draft': False})
+
     return render(request, 'blog_app/write.html', {'write_form': write_form})
+
 
 
 def find_password(request):

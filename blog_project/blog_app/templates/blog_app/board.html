@@ -9,7 +9,7 @@
     </head>
     <body>
         <div class="header_container">
-            <form action="{% url 'post' %}" method="post">
+            <form method="post">
                 {% csrf_token %}
                 <div class="logo_image">
                     <a href="{% url 'board' %}">
@@ -39,20 +39,6 @@
             {% csrf_token %}
             <button type="submit">검색</button>
         </form>
-
-        <a href="{% url 'write' %}">글쓰기</a>
-        <hr>
-        {% for post in post_list %}
-            <h3>
-                <a href="{% url 'post' post.id %}">
-                    {{ post.title }}
-                </a>
-                
-            </h3>
-            <div>{{ post.content | safe }}</div>
-            <a href="{% url 'post_edit' post.pk %}">수정</a>
-            <hr>
-        {% endfor %}
         
     </header>
 </body>
