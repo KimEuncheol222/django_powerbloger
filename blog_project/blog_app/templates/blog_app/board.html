@@ -10,8 +10,7 @@
     <body>
         <header>
             <div class="header_container">
-                <form action="{% url 'post' %}" class="header_form" method="post">
-                    {% csrf_token %}
+                <div class="header_form">
                     <div class="logo_image">
                         <a href="{% url 'board' %}">
                             <img src="{% static 'img/sample_logo_dark.svg' %}" class="logo_image" />
@@ -38,7 +37,7 @@
                             {% endif %}
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </header>
         <section>
@@ -62,7 +61,7 @@
             </article>
         </section>
         <foooter>
-            
+
         </foooter>
     </body>
 </html>
