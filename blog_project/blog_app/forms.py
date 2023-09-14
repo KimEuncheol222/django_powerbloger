@@ -7,6 +7,7 @@ class SearchForm(forms.Form):
 
 
 class BlogPostForm(forms.ModelForm):
+    content = forms.CharField(widget=SummernoteWidget())
     topic = forms.ModelChoiceField(
         queryset=Topic.objects.all(),
         widget=forms.RadioSelect,
@@ -15,7 +16,7 @@ class BlogPostForm(forms.ModelForm):
     )
     class Meta:
         model = BlogPost
-        fields = ['title', 'content', 'topic', 'image']
+        fields = ['title', 'content', 'topic']
         widgets = {
             'content': SummernoteWidget(),
         }
@@ -23,4 +24,3 @@ class BlogPostForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['image'].required = False
