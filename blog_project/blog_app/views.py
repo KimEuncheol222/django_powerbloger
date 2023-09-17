@@ -82,7 +82,9 @@ def new_password(request, username):
     return render(request, 'registration/new_password.html')
 
 def board(request):
-    return render(request, 'blog_app/board.html')
+    recent_posts = BlogPost.objects.order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    context = {'recent_posts': recent_posts}
+    return render(request, 'blog_app/board.html', context)
 
 def post(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id)  # 해당 포스트를 가져오거나 404 에러 반환

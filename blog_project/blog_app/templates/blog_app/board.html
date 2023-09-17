@@ -60,8 +60,20 @@
             <article>
             </article>
         </section>
-        <foooter>
-
-        </foooter>
+        <footer>
+            <div class="recent-posts">
+                <h3>최근 게시물</h3>
+                {% for post in recent_posts %}
+                    <div class="post-item">
+                        <span class="post-title">{{ post.title }}</span>
+                        <span class="post-date">{{ post.created_at|date:"Y-m-d H:i" }}</span>
+                        <p class="post-content">{{ post.content|truncatechars:100|safe }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </footer>
     </body>
+    <script>
+        localStorage.setItem('recentPosts', JSON.stringify(recent_posts));
+    </script>
 </html>
