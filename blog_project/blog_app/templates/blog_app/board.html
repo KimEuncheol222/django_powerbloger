@@ -47,33 +47,53 @@
                         <div class="main_left_container">
                             {% comment %} sample texts {% endcomment %}
                             <div class="main_title">Lorem ipsum dolor</div>
-                            <div class="main_contents">Lorem ipsum dolor sit amet consectetur. Non pretium arcu praesent cursus aliquam pellentesque. Euismod consectetur fames vitae nunc gravida morbi felis porttitor integer. Ridiculus id purus feugiat et mi justo scelerisque euismod euismod. Turpis dictumst luctus nisi placerat purus dolor luctus vitae pretium. Gravida faucibus scelerisque quis mi consequat malesuada.</div>
+                            <div class="main_contents">
+                                Lorem ipsum dolor sit amet consectetur. Non pretium arcu praesent cursus aliquam pellentesque. Euismod consectetur fames vitae nunc gravida morbi felis porttitor
+                                integer. Ridiculus id purus feugiat et mi justo scelerisque euismod euismod. Turpis dictumst luctus nisi placerat purus dolor luctus vitae pretium. Gravida faucibus
+                                scelerisque quis mi consequat malesuada.
+                            </div>
                             <button class="readmore_btn">READ MORE</button>
-                    </div>
+                        </div>
                         <div class="main_right_container">
                             <img src="{% static 'img/title_sample.jpg' %}" class="main_image" />
                         </div>
                     </div>
                 </form>
             </main>
-            {% comment %}  {% endcomment %}
+            {% comment %} {% endcomment %}
             <article>
+                <form action="" class="post-form">
+                    <div class="recent-posts">
+                        <h3>최근 게시물</h3>
+                        {% for post in recent_posts %}
+                        <div class="post-item">
+                            <div class="post-image"><img src={% static 'img/post_sample.svg'%} alt="" /></div>
+                            <div class="post-title">{{ post.title }}</div>
+                            <div class="post-date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                            <div class="post-content">{{ post.content|truncatechars:100|safe }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </form>
+                {% comment %}
+                <form action="" class="article_form">
+                    <div class="article_container">
+                        sample img, texts
+                        <div class="article_image"><img src={% static 'img/post_sample.svg'%} alt="" /></div>
+                        <div class="article_date">2023-09-16 16:11:23</div>
+                        <div class="article_title">Lorem ipsum dolor</div>
+                        <div class="article_contents">
+                            Lorem ipsum dolor sit amet consectetur. Non pretium arcu praesent cursus aliquam pellentesque. Euismod consectetur fames vitae nunc gravida morbi felis porttitor integer.
+                            Ridiculus id purus feugiat et mi justo
+                        </div>
+                    </div>
+                </form>
+                {% endcomment %}
             </article>
         </section>
-        <footer>
-            <div class="recent-posts">
-                <h3>최근 게시물</h3>
-                {% for post in recent_posts %}
-                    <div class="post-item">
-                        <span class="post-title">{{ post.title }}</span>
-                        <span class="post-date">{{ post.created_at|date:"Y-m-d H:i" }}</span>
-                        <p class="post-content">{{ post.content|truncatechars:100|safe }}</p>
-                    </div>
-                {% endfor %}
-            </div>
-        </footer>
+        <footer></footer>
     </body>
     <script>
-        localStorage.setItem('recentPosts', JSON.stringify(recent_posts));
+        localStorage.setItem("recentPosts", JSON.stringify(recent_posts));
     </script>
 </html>
