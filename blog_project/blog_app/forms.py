@@ -20,7 +20,7 @@ class BlogPostForm(forms.ModelForm):
         widgets = {
             'content': SummernoteWidget(),
         }
-        exclude = ['author', 'created_at', 'updated_at', 'is_draft']
+        exclude = ['author', 'created_at', 'updated_at', 'is_draft', 'views']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
