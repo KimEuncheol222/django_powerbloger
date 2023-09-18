@@ -27,5 +27,16 @@
                 </div>
             </div>
         </form>
+        <form method='post'>
+            {% csrf_token %}
+            {{form.as_p}}
+            <div class="buttonbox" style="display: flex; flex-direction: row;">
+                <a class="login-button" href="{% url 'social:begin' 'google-oauth2' %}">
+                    <img src="{% static 'img/btn_google.svg' %}" alt="Google 로고"/>Google 로그인</a>
+                <a class="login-button" href="{% url 'social:begin' 'naver' %}">
+                    <img src="{% static 'img/btn_naver.svg' %}" alt="Naver 로고"/>네이버 로그인</a>
+            </div>
+        </form>
+            <a href="{% url 'board' %}">Home</a>
     </body>
 </html>

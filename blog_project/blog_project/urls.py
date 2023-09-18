@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog_app.urls')),
     path('summernote/', include('django_summernote.urls')),
+    path('', include('social_django.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:
