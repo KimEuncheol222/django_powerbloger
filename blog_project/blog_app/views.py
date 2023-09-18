@@ -102,9 +102,6 @@ def post(request, post_id):
     post.views += 1 
     post.save() 
 
-    # 글쓴이 표시
-    post.author_id = request.user.username
-
     # 이전/다음 게시물 가져옴
     previous_post = BlogPost.objects.filter(id__lt=post.id, is_draft=False).order_by('-id').first()
     next_post = BlogPost.objects.filter(id__gt=post.id, is_draft=False).order_by('id').first()
