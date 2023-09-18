@@ -140,7 +140,7 @@ def write(request):
         if write_form.is_valid():
             blog_post = write_form.save(commit=False)
             blog_post.author = request.user
-            if 'publish' in request.POST:
+            if 'save-button' in request.POST:
                 # '등록' 버튼이 눌린 경우
                 blog_post.is_draft = False
                 blog_post.save()
@@ -148,7 +148,7 @@ def write(request):
                 # 포스트가 저장되면 해당 포스트 페이지로 이동
                 return redirect('post', post_id=blog_post.id)
 
-            elif 'save_temporary' in request.POST:
+            elif 'temp-save-button' in request.POST:
                 # '임시저장' 버튼이 눌린 경우
                 blog_post.is_draft = True
                 blog_post.save()
