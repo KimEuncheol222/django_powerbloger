@@ -79,7 +79,7 @@
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:300|safe|linebreaks|striptags }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
                             </a>
                         </div>
                         {% endfor %} {% for post in daily_posts %}
@@ -92,7 +92,7 @@
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:300|safe|linebreaks|striptags }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
                             </a>
                         </div>
                         {% endfor %} {% for post in cook_posts %}
@@ -105,7 +105,7 @@
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:300|safe|linebreaks|striptags }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
                             </a>
                         </div>
                         {% endfor %} {% for post in travel_posts %}
@@ -118,7 +118,7 @@
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:300|safe|linebreaks|striptags }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
                             </a>
                         </div>
                         {% endfor %} {% for post in movie_posts %}
@@ -131,7 +131,7 @@
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:300|safe|linebreaks|striptags }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
                             </a>
                         </div>
                         {% endfor %} {% for post in it_posts %}
@@ -144,7 +144,7 @@
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:300|safe|linebreaks|striptags }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
                             </a>
                         </div>
                         {% endfor %}
