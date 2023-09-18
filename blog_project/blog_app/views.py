@@ -92,7 +92,8 @@ def new_password(request, username):
 
 def board(request):
     recent_posts = BlogPost.objects.order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
-    context = {'recent_posts': recent_posts}
+    recents_posts = BlogPost.objects.order_by('-created_at')[3:6]
+    context = {'recent_posts': recent_posts, 'recents_posts': recents_posts}
     return render(request, 'blog_app/board.html', context)
 
 def post(request, post_id):
