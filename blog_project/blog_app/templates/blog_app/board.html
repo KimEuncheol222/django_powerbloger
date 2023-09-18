@@ -64,37 +64,18 @@
             <article>
                 <div class="article_form">
                     <div class="article_container">
+                        {% comment %}
                         <h3>최근 게시물</h3>
-                        {% for post in recent_posts %}
-                        <div class="post-item">
-                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000;">
-                                {% if post.image %}
-                                    <div class="post-image"><img src="{{ post.image.url }}" alt="" /></div>
-                                {% else %}
-                                    <div class="post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
-                                {% endif %}
-                                <div class="post-title">{{ post.title }}</div>
-                                <div class="post-date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="post-content">{{ post.content|truncatechars:100|safe }}</div>
-                            </a>
+                        {% endcomment %} {% for post in recent_posts %}
+                        <div class="article_post_item">
+                            <div class="article_post_image"><img src="{% static 'img/post_sample.svg'%}" alt="" /></div>
+                            <div class="article_post_title">{{ post.title }}</div>
+                            <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                            <div class="article_post_content">{{ post.content|truncatechars:100|safe }}</div>
                         </div>
                         {% endfor %}
                     </div>
                 </div>
-                {% comment %}
-                <form action="" class="article_form">
-                    <div class="article_container">
-                        sample img, texts
-                        <div class="article_image"><img src={% static 'img/post_sample.svg'%} alt="" /></div>
-                        <div class="article_date">2023-09-16 16:11:23</div>
-                        <div class="article_title">Lorem ipsum dolor</div>
-                        <div class="article_contents">
-                            Lorem ipsum dolor sit amet consectetur. Non pretium arcu praesent cursus aliquam pellentesque. Euismod consectetur fames vitae nunc gravida morbi felis porttitor integer.
-                            Ridiculus id purus feugiat et mi justo
-                        </div>
-                    </div>
-                </form>
-                {% endcomment %}
             </article>
         </section>
         <footer></footer>
