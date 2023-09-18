@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="/static/css/board.css?{% now "U" %}"/>
+        <link rel="stylesheet" href="/static/css/board.css?{% now "U" %}">
         <title>Document</title>
     </head>
     <body>
@@ -20,14 +20,16 @@
                         <div class="btn_container">
                             <form method="get" action="{% url 'search' %}">
                                 {% csrf_token %}
-                                <button type="submit"><img src="{% static 'img/magnifier_dark.svg' %}" class="search_image" /></button>
+                                <button type="submit">
+                                    <img src="{% static 'img/magnifier_dark.svg' %}" class="search_image" />
+                                </button>
                             </form>
                             <button class="header_btn" type="submit" id="dailyBtn"><a href="{% url 'filter_daily' %}">일상</a></button>
                             <button class="header_btn" type="submit" id="cookBtn"><a href="{% url 'filter_cook' %}">요리</a></button>
                             <button class="header_btn" type="submit" id="travelBtn"><a href="{% url 'filter_travel' %}">여행</a></button>
                             <button class="header_btn" type="submit" id="movieBtn"><a href="{% url 'filter_movie' %}">영화</a></button>
                             <button class="header_btn" type="submit" id="itBtn"><a href="{% url 'filter_it' %}">IT</a></button>
-                        </div>                        
+                        </div>
                         <div class="row_box">
                             {% if user.is_authenticated %}
                             <form method="post" action="{% url 'logout' %}">
@@ -67,21 +69,69 @@
             <article>
                 <div class="article_form">
                     <div class="article_container">
-                        {% comment %}
-                        <h3>최근 게시물</h3>
-                        {% endcomment %} 
-                        <!--첫째 줄-->
                         {% for post in recent_posts %}
                         <div class="article_post_item">
-                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000;">
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
                                 {% if post.image %}
-                                    <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
+                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
                                 {% else %}
-                                    <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:300|safe|linebreaks|striptags }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
+                            </a>
+                        </div>
+                        {% endfor %} {% for post in daily_posts %}
+                        <div class="article_post_item">
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
+                                {% if post.image %}
+                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
+                                {% else %}
+                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                {% endif %}
+                                <div class="article_post_title">{{ post.title }}</div>
+                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
+                            </a>
+                        </div>
+                        {% endfor %} {% for post in cook_posts %}
+                        <div class="article_post_item">
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
+                                {% if post.image %}
+                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
+                                {% else %}
+                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                {% endif %}
+                                <div class="article_post_title">{{ post.title }}</div>
+                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
+                            </a>
+                        </div>
+                        {% endfor %} {% for post in travel_posts %}
+                        <div class="article_post_item">
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
+                                {% if post.image %}
+                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
+                                {% else %}
+                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                {% endif %}
+                                <div class="article_post_title">{{ post.title }}</div>
+                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
+                            </a>
+                        </div>
+                        {% endfor %} {% for post in movie_posts %}
+                        <div class="article_post_item">
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
+                                {% if post.image %}
+                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
+                                {% else %}
+                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                {% endif %}
+                                <div class="article_post_title">{{ post.title }}</div>
+                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
                             </a>
                         </div>
                         {% endfor %}
@@ -105,17 +155,18 @@
                         <!--필터기능-->
                         {% for post in daily_posts %}
                         <div class="article_post_item">
-                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000;">
-                            {% if post.image %}
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
+                                {% if post.image %}
                                 <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
-                            {% else %}
+                                {% else %}
                                 <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
-                            {% endif %}                                
-                            <div class="article_post_title">{{ post.title }}</div>
-                            <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                            <div class="article_post_content">{{ post.content|truncatechars:300|safe|linebreaks|striptags }}</div>
+                                {% endif %}
+                                <div class="article_post_title">{{ post.title }}</div>
+                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
+                            </a>
                         </div>
-                        {% endfor %}       
+                        {% endfor %}
                     </div>
                 </div>
             </article>
