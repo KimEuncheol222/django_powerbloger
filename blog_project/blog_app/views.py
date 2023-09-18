@@ -6,6 +6,8 @@ from .serializers import BlogPostSerializer
 from .forms import BlogPostForm
 from django.db.models import Q
 from .forms import SearchForm
+from django.conf import settings
+from bs4 import BeautifulSoup
 
 # 로그인 views
 def login_view(request):
@@ -89,8 +91,39 @@ def board(request):
 def post(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id)  # 해당 포스트를 가져오거나 404 에러 반환
 
+    if request.method == 'POST':
+        
+        # 요청에 삭제가 포함된경우
+        if 'delete-button' in request.POST:
+            post.delete()
+            return redirect('board')
+    
+    # 조회수 증가 및 db에 저장
+    post.views += 1 
+    post.save() 
+
+    # 글쓴이 표시
+    post.author_id = request.user.username
+
+    # 이전/다음 게시물 가져옴
+    previous_post = BlogPost.objects.filter(id__lt=post.id, is_draft=False).order_by('-id').first()
+    next_post = BlogPost.objects.filter(id__gt=post.id, is_draft=False).order_by('id').first()
+
+    # 같은 주제인 게시물들 중 최신 글 가져옴
+    recommended_posts = BlogPost.objects.filter(topic=post.topic, is_draft=False).exclude(id=post.id).order_by('-created_at')[:2]
+
+    # 게시물 내용에서 첫번째 이미지(썸네일) 태그 추출
+    for recommended_post in recommended_posts:
+        soup = BeautifulSoup(recommended_post.content, 'html.parser')
+        image_tag = soup.find('img')
+        recommended_post.image_tag = str(image_tag) if image_tag else ''
+
     context = {
         'post': post,
+        'previous_post': previous_post,
+        'next_post': next_post,
+        'recommended_posts': recommended_posts,
+        'MEDIA_URL': settings.MEDIA_URL,
     }
 
     return render(request, 'blog_app/post.html', context)
