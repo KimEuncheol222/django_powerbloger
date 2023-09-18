@@ -1,7 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-
+from django.utils import timezone
 
 
 class Topic(models.Model):
@@ -11,7 +11,7 @@ class Topic(models.Model):
 
 
 class BlogPost(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=200)
     content = models.TextField()
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
@@ -34,3 +34,12 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
+
+class TemporaryBlogPost(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return self.title

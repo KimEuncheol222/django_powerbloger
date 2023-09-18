@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="/static/css/write.css?{% now "U" %}"/>
         <link href="{% static 'summernote/summernote.css' %}" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{% static 'summernote/summernote.js' %}"></script>
         <title>Write</title>
     </head>
@@ -48,7 +49,7 @@
         </header>
 
         <section>
-            <form method="post" action="{% url 'write' %}">
+            {% comment %} <form method="post" action="{% url 'write' %}">
                 {% csrf_token %}
                 <div class="write-box">
                     <input type="text" id="title" name="title" class="title" placeholder="제목" value="{{ write_form.title.value }}" />
@@ -87,15 +88,61 @@
                     </div>
                 </div>
             </form>
+            <div id="toast-container" class="toast-container">
+                <div id="toast-message" class="toast">
+                    포스트가 임시 저장되었습니다.
+                </div>
+            </div>
         </section>
 
         <footer>
 
         </footer>
     </body>
-    <script>
+    {% comment %} <script>
         $(document).ready(function() {
         $('#id_content').summernote();  // content 필드에 Summernote 적용
         });
+    </script> {% endcomment %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toastMessage = document.getElementById("toast-message");
+            const writeForm = document.getElementById("write-form");
+    
+            const showToast = () => {
+                toastMessage.style.display = "block";
+                setTimeout(() => {
+                    toastMessage.style.display = "none";
+                }, 5000); // 5초 후에 토스트 메시지를 숨김
+            };
+    
+            if (writeForm) {
+                writeForm.addEventListener("submit", (e) => {
+                    // 폼 데이터를 FormData 객체로 가져오기
+                    const formData = new FormData(writeForm);
+    
+                    // '임시저장' 버튼이 눌렸는지 확인
+                    const saveTemporaryButton = document.querySelector("[name='save_temporary']");
+                    if (saveTemporaryButton && e.submitter === saveTemporaryButton) {
+                        e.preventDefault(); // 폼 제출을 막음
+    
+                        // '임시저장' 버튼을 눌렀을 때만 AJAX 요청 보냄
+                        fetch("{% url 'save_temporary_post' %}", {
+                            method: "POST",
+                            body: formData,
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                // 서버에서의 응답을 처리
+                                showToast();
+                            })
+                            .catch((error) => {
+                                console.error("에러 발생:", error);
+                            });
+                    }
+                });
+            }
+        });
     </script>
+    
 </html>

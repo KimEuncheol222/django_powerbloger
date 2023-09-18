@@ -1,8 +1,11 @@
-from django.contrib.auth.models import User
 from django.contrib import auth
 from django.shortcuts import render, redirect, get_object_or_404
+from .models import CustomUser, BlogPost, TemporaryBlogPost
+from .forms import BlogPostForm, BlogPost, SearchForm
+from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from .models import CustomUser, BlogPost
-from .serializers import BlogPostSerializer
 from .forms import BlogPostForm
 from django.db.models import Q
 from .forms import SearchForm
@@ -129,21 +132,34 @@ def post(request, post_id):
 
     return render(request, 'blog_app/post.html', context)
 
+# 포스트 등록 처리
+@login_required
 def write(request):
     if request.method == 'POST':
         write_form = BlogPostForm(request.POST)
         if write_form.is_valid():
             blog_post = write_form.save(commit=False)
             blog_post.author = request.user
-            blog_post.is_draft = False
-            blog_post.save()
-            return redirect('post', post_id=blog_post.id)   
+            if 'publish' in request.POST:
+                # '등록' 버튼이 눌린 경우
+                blog_post.is_draft = False
+                blog_post.save()
+
+                # 포스트가 저장되면 해당 포스트 페이지로 이동
+                return redirect('post', post_id=blog_post.id)
+
+            elif 'save_temporary' in request.POST:
+                # '임시저장' 버튼이 눌린 경우
+                blog_post.is_draft = True
+                blog_post.save()
+
+                # JSON 응답으로 토스트 메시지만 반환 (페이지 이동 없음)
+                response_data = {'message': '포스트가 임시 저장되었습니다.'}
+                return JsonResponse(response_data)
     else:
         write_form = BlogPostForm(initial={'is_draft': False})
 
     return render(request, 'blog_app/write.html', {'write_form': write_form})
-
-
 
 def find_password(request):
     return render(request, 'registration/find_password.html')
@@ -163,6 +179,40 @@ def search_view(request):
             return render(request, 'blog_app/search.html', {'results': results})
     return render(request, 'blog_app/search.html', {'results': []})
 
+
+# 임시저장기능
+def save_temporary_post(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        user = request.user
+
+        # TemporaryBlogPost 모델의 객체를 생성하고 저장
+        temporary_post = TemporaryBlogPost(author=user, title=title, content=content)
+        temporary_post.save()
+
+        # JSON 응답 반환
+        response_data = {'message': '포스트가 임시 저장되었습니다.'}
+        return JsonResponse(response_data)
+
+
+def temporary_posts(request):
+    # 임시저장된 글 목록 가져오기
+    temporary_posts = TemporaryBlogPost.objects.filter(author=request.user).order_by('-created_at')
+    return render(request, 'blog_app/temporary_posts.html', {'temporary_posts': temporary_posts})
+
+
+def load_temporary_post(request, temp_post_id):
+    temp_post = TemporaryBlogPost.objects.get(pk=temp_post_id)
+    
+    # TemporaryBlogPost 모델에서 데이터를 읽어온 후, 해당 데이터를 BlogPostForm으로 초기화
+    form_data = {
+        'title': temp_post.title,
+        'content': temp_post.content,
+    }
+    write_form = BlogPostForm(initial=form_data)
+    
+    return render(request, 'blog_app/write.html', {'write_form': write_form})
 def filter_daily(request):
     daily_posts = BlogPost.objects.filter(topic__name='일상')[:3]
     context = {'daily_posts': daily_posts}
