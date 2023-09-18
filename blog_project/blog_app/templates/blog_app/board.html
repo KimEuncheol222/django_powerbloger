@@ -65,10 +65,10 @@
                     </div>
                 </form>
             </main>
-            {% comment %} {% endcomment %}
             <article>
                 <div class="article_form">
                     <div class="article_container">
+                        <!-- 첫째 줄 -->
                         {% for post in recent_posts %}
                         <div class="article_post_item">
                             <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
@@ -83,15 +83,17 @@
                             </a>
                         </div>
                         {% endfor %}
-                        
-                        <!--둘쨰 줄-->
+                    </div>
+
+                    <div class="article_container">
+                        <!-- 둘째 줄 -->
                         {% for post in recents_posts %}
                         <div class="article_post_item_second">
-                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000;">
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
                                 {% if post.image %}
-                                    <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
+                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
                                 {% else %}
-                                    <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
@@ -99,9 +101,12 @@
                             </a>
                         </div>
                         {% endfor %}
+                    </div>
 
-                        <!--필터기능-->
-                        <!--첫째 줄-->
+                    <!-- 필터 적용 부분 -->
+
+                    <div class="article_container">
+                        <!-- 첫째 줄 -->
                         {% for post in daily_posts|slice:":3" %}
                         <div class="article_post_item">
                             <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
@@ -116,7 +121,10 @@
                             </a>
                         </div>
                         {% endfor %}
-                        <!--둘째 줄-->
+                    </div>
+
+                    <div class="article_container">
+                        <!-- 둘째 줄 -->
                         {% for post in daily_posts|slice:"3:6" %}
                         <div class="article_post_item_second">
                             <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
