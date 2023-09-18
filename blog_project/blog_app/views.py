@@ -3,9 +3,11 @@ from django.contrib import auth
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import CustomUser, BlogPost
 from .serializers import BlogPostSerializer
-from .forms import BlogPostForm, BlogPost
+from .forms import BlogPostForm
 from django.db.models import Q
 from .forms import SearchForm
+from django.conf import settings
+from bs4 import BeautifulSoup
 
 # 로그인 views
 def login_view(request):
@@ -82,13 +84,46 @@ def new_password(request, username):
     return render(request, 'registration/new_password.html')
 
 def board(request):
-    return render(request, 'blog_app/board.html')
+    recent_posts = BlogPost.objects.order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    context = {'recent_posts': recent_posts}
+    return render(request, 'blog_app/board.html', context)
 
 def post(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id)  # 해당 포스트를 가져오거나 404 에러 반환
 
+    if request.method == 'POST':
+        
+        # 요청에 삭제가 포함된경우
+        if 'delete-button' in request.POST:
+            post.delete()
+            return redirect('board')
+    
+    # 조회수 증가 및 db에 저장
+    post.views += 1 
+    post.save() 
+
+    # 글쓴이 표시
+    post.author_id = request.user.username
+
+    # 이전/다음 게시물 가져옴
+    previous_post = BlogPost.objects.filter(id__lt=post.id, is_draft=False).order_by('-id').first()
+    next_post = BlogPost.objects.filter(id__gt=post.id, is_draft=False).order_by('id').first()
+
+    # 같은 주제인 게시물들 중 최신 글 가져옴
+    recommended_posts = BlogPost.objects.filter(topic=post.topic, is_draft=False).exclude(id=post.id).order_by('-created_at')[:2]
+
+    # 게시물 내용에서 첫번째 이미지(썸네일) 태그 추출
+    for recommended_post in recommended_posts:
+        soup = BeautifulSoup(recommended_post.content, 'html.parser')
+        image_tag = soup.find('img')
+        recommended_post.image_tag = str(image_tag) if image_tag else ''
+
     context = {
         'post': post,
+        'previous_post': previous_post,
+        'next_post': next_post,
+        'recommended_posts': recommended_posts,
+        'MEDIA_URL': settings.MEDIA_URL,
     }
 
     return render(request, 'blog_app/post.html', context)
@@ -126,3 +161,28 @@ def search_view(request):
             results = BlogPost.objects.filter(Q(title__icontains=keyword) | Q(content__icontains=keyword))
             return render(request, 'blog_app/search.html', {'results': results})
     return render(request, 'blog_app/search.html', {'results': []})
+
+def filter_daily(request):
+    daily_posts = BlogPost.objects.filter(topic__name='일상')[:3]
+    context = {'daily_posts': daily_posts}
+    return render(request, 'blog_app/board.html', context)
+
+def filter_cook(request):
+    cook_posts = BlogPost.objects.filter(topic__name='요리')[:3]
+    context = {'daily_posts': cook_posts}
+    return render(request, 'blog_app/board.html', context)
+
+def filter_travel(request):
+    travel_posts = BlogPost.objects.filter(topic__name='여행')[:3]
+    context = {'daily_posts': travel_posts}
+    return render(request, 'blog_app/board.html', context)
+
+def filter_movie(request):
+    movie_posts = BlogPost.objects.filter(topic__name='영화')[:3]
+    context = {'daily_posts': movie_posts}
+    return render(request, 'blog_app/board.html', context)
+
+def filter_it(request):
+    it_posts = BlogPost.objects.filter(topic__name='IT')[:3]
+    context = {'daily_posts': it_posts}
+    return render(request, 'blog_app/board.html', context)

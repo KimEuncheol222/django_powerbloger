@@ -20,13 +20,17 @@
                         <div class="btn_container">
                             <form method="get" action="{% url 'search' %}">
                                 {% csrf_token %}
+                        </div>
+                        <div class="btn_container">
+                            <form method="get" action="{% url 'search' %}">
+                                {% csrf_token %}
                                 <button type="submit"><img src="{% static 'img/magnifier_dark.svg' %}" class="search_image" /></button>
                             </form>
-                            <button class="header_btn" type="submit" id="dailyBtn">일상</button>
-                            <button class="header_btn" type="submit" id="cookBtn">요리</button>
-                            <button class="header_btn" type="submit" id="travelBtn">여행</button>
-                            <button class="header_btn" type="submit" id="movieBtn">영화</button>
-                            <button class="header_btn" type="submit" id="itBtn">IT</button>
+                            <button class="header_btn" type="submit" id="dailyBtn"><a href="{% url 'filter_daily' %}">일상</a></button>
+                            <button class="header_btn" type="submit" id="cookBtn"><a href="{% url 'filter_cook' %}">요리</a></button>
+                            <button class="header_btn" type="submit" id="travelBtn"><a href="{% url 'filter_travel' %}">여행</a></button>
+                            <button class="header_btn" type="submit" id="movieBtn"><a href="{% url 'filter_movie' %}">영화</a></button>
+                            <button class="header_btn" type="submit" id="itBtn"><a href="{% url 'filter_it' %}">IT</a></button>
                         </div>
                         <div class="row_box">
                             {% if user.is_authenticated %}
@@ -42,28 +46,88 @@
         </header>
 
         <section>
-            <article>
-                <div class="post-info">
-                    <h1>{{ post.title }}</h1>
-                    <h5>author: {{ post.author_id }}</h5>
-                    <h5 class="topic-box">topic: {{ post.topic }}</h5>
-                    <h5>작성일: {{ post.created_at }}</h5>
-                    <h5>업데이트일: {{ post.updated_at }}</h5>
-                    <h4>조회수: {{ post.views }}</h4>
-                </div>
-                <div class="post-content">content: {{ post.content | safe }}</div>
-            </article>
-            
-            <asdie>
-
-            </asdie>
+            <div class="box-divider">
+                <article class="big-box">
+                    <div class="post-info">
+                        <h1>{{ post.title }}</h1>
+                        <h5>By {{ post.author_id }}</h5>
+                        <h5>작성: {{ post.created_at | date:"Y-m-d H:i" }}</h5>
+                        <h5>수정: {{ post.updated_at | date:"Y-m-d H:i" }}</h5>
+                        <h4>{{ post.views }} views</h4>
+                        <h5 class="topic-box">{{ post.topic }}</h5>
+                    </div>
+                    <div class="post-content">{{ post.content | safe }}</div>
+                </article>
+                
+                <asdie class="small-box">
+                    <div>
+                        <h3>Other posts</br>you may like</h3>
+                        {% for recommended_post in recommended_posts %}
+                        <div class="recommend-box">
+                            <a href="{% url 'post' recommended_post.id %}">
+                            {% if recommended_post.image_tag %}
+                                {{ recommended_post.image_tag|safe }}
+                            {% else %}
+                                <img src="{% static 'img/post_sample.svg' %}" alt="기본 이미지" />
+                            {% endif %}
+                                <span>{{ recommended_post.title }}</span>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </asdie>
+            </div>
             
             <div class="btn-box">
-
+                {% if user.is_authenticated %}
+                <div class="box-divider" style="gap:10px">
+                    <a href="{% url 'write' %}">
+                        <button class="edit-button">수정하기</button>
+                    </a>
+                    <form method="POST" action="{% url 'board' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="delete-button" value="true">
+                        <button type="submit" class="delete-button">삭제하기</button>
+                    </form>
+                </div>
+                {% endif %}
+                <button class="share-button">공유하기</button>
             </div>
 
             <nav>
+                <!-- 다음글 표시 -->
+                {% if next_post %}
+                <div class="another-post-box">
+                <div class="post-box">
+                    <div class="post-label">다음글</div>
+                    <div class="post-name">
+                        <a href="{% url 'post' next_post.id %}">
+                            <span>{{ next_post.title }}</span>
+                        </a>
+                    </div>
+                </div>
+                <p>{{ next_post.created_at | date:"Y.m.d" }}</p>
+                </div>
+                {% else %}
+                <div class="another-post-box"></div>
+                {% endif %}
 
+                <!-- 이전글 표시 -->
+                {% if previous_post %}
+                <div class="another-post-box">
+                <div class="post-box">
+                    <div class="post-label">이전글</div>
+                    <div class="post-name">
+                        <a href="{% url 'post' previous_post.id %}">
+                            <span>{{ previous_post.title }}</span>
+                        </a>
+                    </div>
+                </div>
+                <p>{{ previous_post.created_at | date:"Y.m.d" }}</p>
+                </div>
+                {% else %}
+                <div class="another-post-box"></div>
+                {% endif %}
             </nav>
         </section>
 
@@ -71,4 +135,21 @@
             
         </footer>
     </body>
+    <script>
+        // 공유하기 버튼 클릭 시
+        document.querySelector('.share-button').addEventListener('click', function() {
+            let postUrl = window.location.href;
+            
+            // 클립보드에 복사
+            let tempInput = document.createElement("input");
+            document.body.appendChild(tempInput);
+            tempInput.value = postUrl;
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            
+            // 알림 표시
+            alert('링크가 클립보드에 복사되었습니다!');
+        });
+    </script>
 </html>

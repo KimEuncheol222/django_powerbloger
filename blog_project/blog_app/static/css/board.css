@@ -284,3 +284,40 @@ main {
         opacity: 1;
     }
 }
+
+/* article */
+.article_form {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+    border: 1px solid orange;
+}
+
+.article_container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    margin-top: 54px;
+    border: 2px solid green;
+}
+
+.article_post_date,
+.article_post_content {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 25px;
+    color: #1e1e1e;
+    word-break: break-all;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+.article_post_title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1e1e1e;
+}
