@@ -67,10 +67,16 @@
                         <h3>최근 게시물</h3>
                         {% for post in recent_posts %}
                         <div class="post-item">
-                            <div class="post-image"><img src="{% static 'img/post_sample.svg'%}" alt="" /></div>
-                            <div class="post-title">{{ post.title }}</div>
-                            <div class="post-date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                            <div class="post-content">{{ post.content|truncatechars:100|safe }}</div>
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000;">
+                                {% if post.image %}
+                                    <div class="post-image"><img src="{{ post.image.url }}" alt="" /></div>
+                                {% else %}
+                                    <div class="post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                {% endif %}
+                                <div class="post-title">{{ post.title }}</div>
+                                <div class="post-date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                                <div class="post-content">{{ post.content|truncatechars:100|safe }}</div>
+                            </a>
                         </div>
                         {% endfor %}
                     </div>
