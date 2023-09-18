@@ -82,60 +82,8 @@
                                 <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
                             </a>
                         </div>
-                        {% endfor %} {% for post in daily_posts %}
-                        <div class="article_post_item">
-                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
-                                {% if post.image %}
-                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
-                                {% else %}
-                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
-                                {% endif %}
-                                <div class="article_post_title">{{ post.title }}</div>
-                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
-                            </a>
-                        </div>
-                        {% endfor %} {% for post in cook_posts %}
-                        <div class="article_post_item">
-                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
-                                {% if post.image %}
-                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
-                                {% else %}
-                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
-                                {% endif %}
-                                <div class="article_post_title">{{ post.title }}</div>
-                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
-                            </a>
-                        </div>
-                        {% endfor %} {% for post in travel_posts %}
-                        <div class="article_post_item">
-                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
-                                {% if post.image %}
-                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
-                                {% else %}
-                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
-                                {% endif %}
-                                <div class="article_post_title">{{ post.title }}</div>
-                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
-                            </a>
-                        </div>
-                        {% endfor %} {% for post in movie_posts %}
-                        <div class="article_post_item">
-                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
-                                {% if post.image %}
-                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
-                                {% else %}
-                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
-                                {% endif %}
-                                <div class="article_post_title">{{ post.title }}</div>
-                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
-                            </a>
-                        </div>
                         {% endfor %}
-
+                        
                         <!--둘쨰 줄-->
                         {% for post in recents_posts %}
                         <div class="article_post_item_second">
@@ -153,8 +101,24 @@
                         {% endfor %}
 
                         <!--필터기능-->
-                        {% for post in daily_posts %}
+                        <!--첫째 줄-->
+                        {% for post in daily_posts|slice:":3" %}
                         <div class="article_post_item">
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
+                                {% if post.image %}
+                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
+                                {% else %}
+                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                {% endif %}
+                                <div class="article_post_title">{{ post.title }}</div>
+                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                        <!--둘째 줄-->
+                        {% for post in daily_posts|slice:"3:6" %}
+                        <div class="article_post_item_second">
                             <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
                                 {% if post.image %}
                                 <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>

@@ -215,26 +215,26 @@ def load_temporary_post(request, temp_post_id):
     
     return render(request, 'blog_app/write.html', {'write_form': write_form})
 def filter_daily(request):
-    daily_posts = BlogPost.objects.filter(topic__name='일상')[:3]
+    daily_posts = BlogPost.objects.filter(topic__name='일상')
     context = {'daily_posts': daily_posts}
     return render(request, 'blog_app/board.html', context)
 
 def filter_cook(request):
-    cook_posts = BlogPost.objects.filter(topic__name='요리')[:3]
+    cook_posts = BlogPost.objects.filter(topic__name='요리')
     context = {'daily_posts': cook_posts}
     return render(request, 'blog_app/board.html', context)
 
 def filter_travel(request):
-    travel_posts = BlogPost.objects.filter(topic__name='여행')[:3]
+    travel_posts = BlogPost.objects.filter(topic__name='여행')
     context = {'daily_posts': travel_posts}
     return render(request, 'blog_app/board.html', context)
 
 def filter_movie(request):
-    movie_posts = BlogPost.objects.filter(topic__name='영화')[:3]
+    movie_posts = BlogPost.objects.filter(topic__name='영화')
     context = {'daily_posts': movie_posts}
     return render(request, 'blog_app/board.html', context)
 
 def filter_it(request):
-    it_posts = BlogPost.objects.filter(topic__name='IT')[:3]
+    it_posts = BlogPost.objects.filter(topic__name='IT')
     context = {'daily_posts': it_posts}
     return render(request, 'blog_app/board.html', context)
