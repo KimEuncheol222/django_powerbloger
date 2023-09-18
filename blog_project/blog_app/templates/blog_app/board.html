@@ -66,12 +66,19 @@
                     <div class="article_container">
                         {% comment %}
                         <h3>최근 게시물</h3>
-                        {% endcomment %} {% for post in recent_posts %}
+                        {% endcomment %} 
+                        {% for post in recent_posts %}
                         <div class="article_post_item">
-                            <div class="article_post_image"><img src="{% static 'img/post_sample.svg'%}" alt="" /></div>
-                            <div class="article_post_title">{{ post.title }}</div>
-                            <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                            <div class="article_post_content">{{ post.content|truncatechars:100|safe }}</div>
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000;">
+                                {% if post.image %}
+                                    <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
+                                {% else %}
+                                    <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                {% endif %}
+                                <div class="article_post_title">{{ post.title }}</div>
+                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:100|safe }}</div>
+                            </a>
                         </div>
                         {% endfor %}
                     </div>
