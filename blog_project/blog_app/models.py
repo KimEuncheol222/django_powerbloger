@@ -19,6 +19,7 @@ class BlogPost(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_draft = models.BooleanField(default=False)  # 임시 저장 여부를 나타내는 필드
+    views = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
