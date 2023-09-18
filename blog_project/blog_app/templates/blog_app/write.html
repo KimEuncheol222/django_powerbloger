@@ -16,7 +16,7 @@
                 <div class="header_form">
                     <div class="logo_image">
                         <a href="{% url 'board' %}">
-                            <img src="{% static 'img/sample_logo_dark.svg' %}" class="logo_image" />
+                            <img src="{% static 'img/sample_logo_light.svg' %}" class="logo_image" />
                         </a>
                     </div>
                     <div class="right_container">
@@ -27,7 +27,7 @@
                         <div class="btn_container">
                             <form method="get" action="{% url 'search' %}">
                                 {% csrf_token %}
-                                <button type="submit"><img src="{% static 'img/magnifier_dark.svg' %}" class="search_image" /></button>
+                                <button type="submit"><img src="{% static 'img/magnifier_light.svg' %}" class="search_image" /></button>
                             </form>
                             <button class="header_btn" type="submit" id="dailyBtn"><a href="{% url 'filter_daily' %}">일상</a></button>
                             <button class="header_btn" type="submit" id="cookBtn"><a href="{% url 'filter_cook' %}">요리</a></button>
