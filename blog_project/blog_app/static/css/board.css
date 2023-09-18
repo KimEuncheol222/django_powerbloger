@@ -290,10 +290,10 @@ main {
 .article_form {
     width: 80%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     margin: auto;
-    border: 1px solid orange;
 }
 
 .article_container {
@@ -302,12 +302,25 @@ main {
     display: flex;
     justify-content: space-between;
     margin: 0;
+    margin-bottom: 18px;
+}
+
+.article_container_second {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
     margin-top: 54px;
-    border: 2px solid green;
 }
 
 .article_post_item {
-    border: 2px solid blue;
+    width: 320px;
+    height: auto;
+    overflow-wrap: break-all;
+}
+
+.article_post_item_second {
     width: 320px;
     height: auto;
     overflow-wrap: break-all;
