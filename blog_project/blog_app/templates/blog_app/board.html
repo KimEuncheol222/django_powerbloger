@@ -30,7 +30,10 @@
                         </div>
                         <div class="row_box">
                             {% if user.is_authenticated %}
-                            <a href="{% url 'board' %}" class="logout_btn">Logout</a>
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="logout_btn">Logout</button>
+                            </form>
                             <a href="{% url 'write' %}" class="write_btn">Just Write!</a>
                             {% else %}
                             <a href="{% url 'login' %}" class="login_btn">Login</a>
@@ -77,7 +80,7 @@
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:100|safe }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:300|safe|linebreaks }}</div>
                             </a>
                         </div>
                         {% endfor %}
