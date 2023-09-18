@@ -3,7 +3,7 @@ from django.contrib import auth
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import CustomUser, BlogPost
 from .serializers import BlogPostSerializer
-from .forms import BlogPostForm, BlogPost
+from .forms import BlogPostForm
 from django.db.models import Q
 from .forms import SearchForm
 
