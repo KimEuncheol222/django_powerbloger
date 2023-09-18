@@ -161,3 +161,28 @@ def search_view(request):
             results = BlogPost.objects.filter(Q(title__icontains=keyword) | Q(content__icontains=keyword))
             return render(request, 'blog_app/search.html', {'results': results})
     return render(request, 'blog_app/search.html', {'results': []})
+
+def filter_daily(request):
+    daily_posts = BlogPost.objects.filter(topic__name='일상')[:3]
+    context = {'daily_posts': daily_posts}
+    return render(request, 'blog_app/board.html', context)
+
+def filter_cook(request):
+    cook_posts = BlogPost.objects.filter(topic__name='요리')[:3]
+    context = {'daily_posts': cook_posts}
+    return render(request, 'blog_app/board.html', context)
+
+def filter_travel(request):
+    travel_posts = BlogPost.objects.filter(topic__name='여행')[:3]
+    context = {'daily_posts': travel_posts}
+    return render(request, 'blog_app/board.html', context)
+
+def filter_movie(request):
+    movie_posts = BlogPost.objects.filter(topic__name='영화')[:3]
+    context = {'daily_posts': movie_posts}
+    return render(request, 'blog_app/board.html', context)
+
+def filter_it(request):
+    it_posts = BlogPost.objects.filter(topic__name='IT')[:3]
+    context = {'daily_posts': it_posts}
+    return render(request, 'blog_app/board.html', context)

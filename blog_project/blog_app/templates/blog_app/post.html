@@ -20,13 +20,17 @@
                         <div class="btn_container">
                             <form method="get" action="{% url 'search' %}">
                                 {% csrf_token %}
+                        </div>
+                        <div class="btn_container">
+                            <form method="get" action="{% url 'search' %}">
+                                {% csrf_token %}
                                 <button type="submit"><img src="{% static 'img/magnifier_dark.svg' %}" class="search_image" /></button>
                             </form>
-                            <button class="header_btn" type="submit" id="dailyBtn">일상</button>
-                            <button class="header_btn" type="submit" id="cookBtn">요리</button>
-                            <button class="header_btn" type="submit" id="travelBtn">여행</button>
-                            <button class="header_btn" type="submit" id="movieBtn">영화</button>
-                            <button class="header_btn" type="submit" id="itBtn">IT</button>
+                            <button class="header_btn" type="submit" id="dailyBtn"><a href="{% url 'filter_daily' %}">일상</a></button>
+                            <button class="header_btn" type="submit" id="cookBtn"><a href="{% url 'filter_cook' %}">요리</a></button>
+                            <button class="header_btn" type="submit" id="travelBtn"><a href="{% url 'filter_travel' %}">여행</a></button>
+                            <button class="header_btn" type="submit" id="movieBtn"><a href="{% url 'filter_movie' %}">영화</a></button>
+                            <button class="header_btn" type="submit" id="itBtn"><a href="{% url 'filter_it' %}">IT</a></button>
                         </div>
                         <div class="row_box">
                             {% if user.is_authenticated %}
