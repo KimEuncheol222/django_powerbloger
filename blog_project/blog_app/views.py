@@ -25,6 +25,10 @@ def login_view(request):
         
     return render(request, 'registration/login.html')
 
+# social 로그인
+def social_login_view(request):
+    return render(request, 'registration/login.html')
+
 # 로그아웃 views
 def logout_view(request):
     # 로그아웃 성공시 로그인 화면으로
