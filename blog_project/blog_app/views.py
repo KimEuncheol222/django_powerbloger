@@ -157,6 +157,7 @@ def write(request, post_id=None):
         if write_form.is_valid():
             blog_post = write_form.save(commit=False)
             blog_post.author = request.user
+            blog_post.updated_at = timezone.now()
 
             # 게시물 삭제
             if 'delete-button' in request.POST:
@@ -178,7 +179,6 @@ def write(request, post_id=None):
                 response_data = {'message': '포스트가 임시 저장되었습니다.'}
                 return JsonResponse(response_data)
             
-            blog_post.updated_at = timezone.now()
             blog_post.save()
             return redirect('post', post_id=blog_post.id)
             
