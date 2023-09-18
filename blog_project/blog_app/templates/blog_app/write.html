@@ -49,10 +49,10 @@
         </header>
 
         <section>
-            <form method="post" action="{% url 'write' %}">
+            <form method="post" action="{% if edit_mode %}{% url 'edit_post' blog_post.id %}{% else %}{% url 'write' %}{% endif %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="write-box">
-                    <input type="text" id="title" name="title" class="title" placeholder="제목" value="{{ write_form.title.value }}" />
+                    <input type="text" id="title" name="title" class="title" placeholder="제목" value="{{ write_form.title.value|default:'' }}" />
                     <div class="content">{{ write_form.content }}</div>
                 </div>
 

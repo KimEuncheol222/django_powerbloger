@@ -11,6 +11,7 @@ from django.db.models import Q
 from .forms import SearchForm
 from django.conf import settings
 from bs4 import BeautifulSoup
+from django.utils import timezone
 
 # 로그인 views
 def login_view(request):
@@ -96,6 +97,8 @@ def board(request):
     context = {'recent_posts': recent_posts, 'recents_posts': recents_posts}
     return render(request, 'blog_app/board.html', context)
 
+
+# 포스트 상세보기
 def post(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id)  # 해당 포스트를 가져오거나 404 에러 반환
 
@@ -133,34 +136,59 @@ def post(request, post_id):
 
     return render(request, 'blog_app/post.html', context)
 
+
 # 포스트 등록 처리
 @login_required
-def write(request):
+def write(request, post_id=None):
+
+    # 글 수정 페이지
+    if post_id:
+        blog_post = get_object_or_404(BlogPost, id=post_id)
+        edit_mode = True
+
+    # 글쓰기 페이지의 경우, 임시저장한 글이 있는지 검색 
+    else:
+        blog_post = BlogPost.objects.filter(author_id=request.user, is_draft=True).order_by('-created_at').first()
+        edit_mode = False
+
+    # 업로드 / 수정 버튼 클릭
     if request.method == 'POST':
-        write_form = BlogPostForm(request.POST)
+        write_form = BlogPostForm(request.POST, instance=blog_post)
         if write_form.is_valid():
             blog_post = write_form.save(commit=False)
             blog_post.author = request.user
+
+            # 게시물 삭제
+            if 'delete-button' in request.POST:
+                blog_post.delete() 
+                return redirect('board') 
+
+            # '저장' 버튼이 눌린 경우
             if 'save-button' in request.POST:
-                # '등록' 버튼이 눌린 경우
                 blog_post.is_draft = False
                 blog_post.save()
-
                 # 포스트가 저장되면 해당 포스트 페이지로 이동
                 return redirect('post', post_id=blog_post.id)
 
+            # '임시저장' 버튼이 눌린 경우
             elif 'temp-save-button' in request.POST:
-                # '임시저장' 버튼이 눌린 경우
                 blog_post.is_draft = True
                 blog_post.save()
-
                 # JSON 응답으로 토스트 메시지만 반환 (페이지 이동 없음)
                 response_data = {'message': '포스트가 임시 저장되었습니다.'}
                 return JsonResponse(response_data)
+            
+            blog_post.updated_at = timezone.now()
+            blog_post.save()
+            return redirect('post', post_id=blog_post.id)
+            
     else:
-        write_form = BlogPostForm(initial={'is_draft': False})
+        write_form = BlogPostForm(instance=blog_post)
 
-    return render(request, 'blog_app/write.html', {'write_form': write_form})
+    context = {'write_form': write_form, 'blog_post': blog_post, 'edit_mode': edit_mode, 'MEDIA_URL': settings.MEDIA_URL}
+
+    return render(request, 'blog_app/write.html', context)
+
 
 def find_password(request):
     return render(request, 'registration/find_password.html')

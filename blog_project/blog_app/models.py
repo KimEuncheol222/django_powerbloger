@@ -17,7 +17,7 @@ class BlogPost(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='post_images/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField()
     is_draft = models.BooleanField(default=False)  # 임시 저장 여부를 나타내는 필드
     views = models.IntegerField(default=0)
 

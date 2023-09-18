@@ -81,10 +81,10 @@
             <div class="btn-box">
                 {% if user.is_authenticated and user.username == post.author.username %}
                 <div class="box-divider" style="gap:10px">
-                    <a href="{% url 'write' %}">
+                    <a href="{% url 'edit_post' post.id %}">
                         <button class="edit-button">수정하기</button>
                     </a>
-                    <form method="POST" action="{% url 'board' %}">
+                    <form method="POST" action="{% url 'post' post.id %}">
                         {% csrf_token %}
                         <input type="hidden" name="delete-button" value="true">
                         <button type="submit" class="delete-button">삭제하기</button>
