@@ -242,6 +242,30 @@ def load_temporary_post(request, temp_post_id):
     write_form = BlogPostForm(initial=form_data)
     
     return render(request, 'blog_app/write.html', {'write_form': write_form})
+
+
+def delete_temporary_post(request, temp_post_id):
+    if request.method == 'DELETE':
+        try:
+            # 삭제할 임시 글을 가져옴
+            temp_post = TemporaryBlogPost.objects.get(pk=temp_post_id)
+
+            # 현재 사용자가 해당 임시 글의 저자인지 확인
+            if temp_post.author == request.user:
+                temp_post.delete()
+                # 삭제 성공 응답
+                return JsonResponse({'success': True})
+            else:
+                # 권한이 없는 사용자가 글을 삭제하려고 시도
+                return JsonResponse({'success': False, 'error': '글을 삭제할 권한이 없습니다.'})
+        except TemporaryBlogPost.DoesNotExist:
+            # 임시 글이 존재하지 않음
+            return JsonResponse({'success': False, 'error': '임시 글이 존재하지 않습니다.'})
+    else:
+        # 유효하지 않은 요청 메서드
+        return JsonResponse({'success': False, 'error': '유효하지 않은 요청 메서드입니다.'})
+
+
 def filter_daily(request):
     daily_posts = BlogPost.objects.filter(topic__name='일상')
     context = {'daily_posts': daily_posts}
