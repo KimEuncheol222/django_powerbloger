@@ -11,12 +11,20 @@
         <form action="{%url 'login' %}" method="post">
             {% csrf_token %}
             <div class="main_container">
+                <a class="home_btn" href="{% url 'board' %}"><img class="home_logo" src="{% static 'img/home_logo.svg' %}" alt="Home logo" /><span class="home_span">Home</span></a>
                 <div class="login_text">Login</div>
 
                 <div class="login_container">
                     <input placeholder="username" type="text" id="userId" name="username" /><br />
                     <input placeholder="password" type="password" id="pwd" name="password" />
                     <button class="login_btn" type="submit" id="loginBtn">Login</button>
+                    <span class="divide_line"></span>
+                    <a class="social_btn_google" href="{% url 'social:begin' 'google-oauth2' %}"
+                        ><img class="google_logo" src="{% static 'img/btn_google.svg' %}" alt="Google logo" />Sign in with<span class="google_span">&nbsp;Google</span></a
+                    >
+                    <a class="social_btn_naver" href="{% url 'social:begin' 'naver' %}"
+                        ><img class="naver_logo" src="{% static 'img/btn_naver.svg' %}" alt="Naver logo" /><span class="naver_span">Sign in with</span><span class="naver_span_2">&nbsp;NAVER</span></a
+                    >
                 </div>
                 {% if error %}
                 <div><strong>Error:</strong> {{ error }}</div>
@@ -27,16 +35,6 @@
                 </div>
             </div>
         </form>
-        <form method='post'>
-            {% csrf_token %}
-            {{form.as_p}}
-            <div class="buttonbox" style="display: flex; flex-direction: row;">
-                <a class="login-button" href="{% url 'social:begin' 'google-oauth2' %}">
-                    <img src="{% static 'img/btn_google.svg' %}" alt="Google 로고"/>Google 로그인</a>
-                <a class="login-button" href="{% url 'social:begin' 'naver' %}">
-                    <img src="{% static 'img/btn_naver.svg' %}" alt="Naver 로고"/>네이버 로그인</a>
-            </div>
-        </form>
-            <a href="{% url 'board' %}">Home</a>
+        <form method="post">{% csrf_token %} {{form.as_p}}</form>
     </body>
 </html>

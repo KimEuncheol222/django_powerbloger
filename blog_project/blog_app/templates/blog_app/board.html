@@ -47,23 +47,18 @@
         </header>
         <section>
             <main>
-                <form action="" class="main_form">
+                <div class="main_form">
                     <div class="main_container">
                         <div class="main_left_container">
-                            {% comment %} sample texts {% endcomment %}
-                            <div class="main_title">Lorem ipsum dolor</div>
-                            <div class="main_contents">
-                                Lorem ipsum dolor sit amet consectetur. Non pretium arcu praesent cursus aliquam pellentesque. Euismod consectetur fames vitae nunc gravida morbi felis porttitor
-                                integer. Ridiculus id purus feugiat et mi justo scelerisque euismod euismod. Turpis dictumst luctus nisi placerat purus dolor luctus vitae pretium. Gravida faucibus
-                                scelerisque quis mi consequat malesuada.
-                            </div>
-                            <button class="readmore_btn">READ MORE</button>
+                            <div class="main_title">{{ main_post.title }}</div>
+                            <div class="main_contents">{{ main_post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
+                            <button class="readmore_btn" name="readmore_btn">READ MORE</button>
                         </div>
                         <div class="main_right_container">
                             <img src="{% static 'img/title_sample.jpg' %}" class="main_image" />
                         </div>
                     </div>
-                </form>
+                </div>
             </main>
             <article>
                 <div class="article_form">
