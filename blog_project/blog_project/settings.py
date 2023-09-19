@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os, environ
-import openai 
 
 
 env = environ.Env()
@@ -132,9 +131,6 @@ DATABASES = {
         'PORT': env("DB_PORT"),
     }
 }
-
-# openai ChatGPT API
-openai.api_key = env("OPENAI_API_KEY")
 
 
 # Password validation
