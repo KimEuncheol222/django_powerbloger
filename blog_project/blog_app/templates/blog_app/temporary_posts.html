@@ -21,13 +21,16 @@
                 </h2>
                 <div class="temporary-post-content">{{ temp_post.content|striptags|safe }}</div><br>
                 <div class="temporary-post-time">{% custom_naturaltime temp_post.created_at %}</div>
-                <form method="post" action="{% url 'write' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="title" value="{{ temp_post.title }}">
-                    <input type="hidden" name="content" value="{{ temp_post.content }}">
-                </form>
+                <div class="delete-button-container">
+                    <form method="post" action="{% url 'write' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="{{ temp_post.title }}">
+                        <input type="hidden" name="content" value="{{ temp_post.content }}">
+                    </form>
                     <button type="submit" class="delete-temp-post-button" data-temp-post-id="{{ temp_post.id }}">삭제</button>
+                </div>
             </li>
+            
             {% endfor %}
         </ul>
     </div>

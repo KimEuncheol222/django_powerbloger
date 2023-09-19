@@ -370,3 +370,77 @@ a {
     object-fit: cover;
     height: 100%;
 }
+
+/* 댓글 추가 버튼 스타일링 */
+.add-comment-button {
+    background-color: #1e1e1e;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.add-comment-button:hover {
+    background-color: #0056b3;
+}
+
+/* 댓글 작성 폼 스타일링 */
+#comment-form {
+    display: none;
+    margin-top: 20px;
+}
+
+#comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+#comment-form button {
+    background-color: #1e1e1e;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+#comment-form button:hover {
+    background-color: #0056b3;
+}
+
+/* 댓글 컨테이너 스타일 */
+.comments {
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+}
+
+/* 개별 댓글 스타일 */
+.comment {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* 댓글 작성자 스타일 */
+.comment p:nth-child(2) {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* 댓글 날짜 스타일 */
+.comment p:nth-child(3) {
+    color: #777;
+    font-size: 12px;
+    margin-top: 5px;
+}

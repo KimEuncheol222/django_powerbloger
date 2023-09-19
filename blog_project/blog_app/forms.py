@@ -1,5 +1,5 @@
 from django import forms
-from .models import BlogPost, Topic
+from .models import BlogPost, Topic, Comment
 from django_summernote.widgets import SummernoteWidget
 
 class SearchForm(forms.Form):
@@ -24,3 +24,9 @@ class BlogPostForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']

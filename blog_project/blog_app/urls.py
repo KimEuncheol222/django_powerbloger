@@ -25,4 +25,5 @@ urlpatterns = [
     path('filter/travel/', views.filter_travel, name='filter_travel'),
     path('filter/movie/', views.filter_movie, name='filter_movie'),
     path('filter/it/', views.filter_it, name='filter_it'),
+    path('post/<int:post_id>/add_comment/', views.add_comment, name='add_comment'),
 ]

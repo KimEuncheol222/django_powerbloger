@@ -1,7 +1,7 @@
 from django.contrib import auth
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import CustomUser, BlogPost, TemporaryBlogPost
-from .forms import BlogPostForm, BlogPost, SearchForm
+from .forms import BlogPostForm, BlogPost, SearchForm, CommentForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -110,11 +110,20 @@ def post(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id)  # 해당 포스트를 가져오거나 404 에러 반환
 
     if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
+            return redirect('post', post_id=post.id)
+    else:
+        form = CommentForm()
         
         # 요청에 삭제가 포함된경우
-        if 'delete-button' in request.POST:
-            post.delete()
-            return redirect('board')
+    if 'delete-button' in request.POST:
+        post.delete()
+        return redirect('board')
     
     # 조회수 증가 및 db에 저장
     post.views += 1 
@@ -139,6 +148,7 @@ def post(request, post_id):
         'next_post': next_post,
         'recommended_posts': recommended_posts,
         'MEDIA_URL': settings.MEDIA_URL,
+        'form': form,
     }
 
     return render(request, 'blog_app/post.html', context)
@@ -331,3 +341,21 @@ def autocomplete(request):
             message = str(e)
         return JsonResponse({"message": message})
     return render(request, 'blog_app/write.html')
+
+
+@login_required
+def add_comment(request, post_id):
+    post = get_object_or_404(BlogPost, id=post_id)
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
+            return redirect('post', post_id=post.id)
+    else:
+        form = CommentForm()
+
+    return render(request, 'blog_app/add_comment.html', {'form': form})
