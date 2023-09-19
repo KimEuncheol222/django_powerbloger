@@ -50,12 +50,15 @@
                 <div class="main_form">
                     <div class="main_container">
                         <div class="main_left_container">
-                            <div class="main_title">{{ main_post.title }}</div>
-                            <div class="main_contents">{{ main_post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
+                            <div class="main_title">슬기로운 빵빵이의 일상</div>
+                            <div class="main_contents">
+                                오르미 2기 여러분! 만나서 반갑습니다. <br />
+                                빵빵이의 세계에 오신걸 환영합니다! <br />
+                            </div>
                             <button class="readmore_btn" name="readmore_btn">READ MORE</button>
                         </div>
                         <div class="main_right_container">
-                            <img src="{% static 'img/title_sample.jpg' %}" class="main_image" />
+                            <img src="{% static 'img/bbang2_smile.jpeg' %}" class="main_image" />
                         </div>
                     </div>
                 </div>
@@ -70,7 +73,7 @@
                                 {% if post.image %}
                                 <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
                                 {% else %}
-                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                <div class="article_post-image"><img src="{% static 'img/bbang2.png' %}" alt="" /></div>
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
@@ -88,7 +91,7 @@
                                 {% if post.image %}
                                 <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
                                 {% else %}
-                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                <div class="article_post-image"><img src="{% static 'img/bbang2.png' %}" alt="" /></div>
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
@@ -109,7 +112,7 @@
                                 {% if post.image %}
                                 <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
                                 {% else %}
-                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                <div class="article_post-image"><img src="{% static 'img/bbang2.png' %}" alt="" /></div>
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
@@ -127,7 +130,7 @@
                                 {% if post.image %}
                                 <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
                                 {% else %}
-                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                <div class="article_post-image"><img src="{% static 'img/bbang2.png' %}" alt="" /></div>
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>

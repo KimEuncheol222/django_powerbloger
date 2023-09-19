@@ -236,11 +236,12 @@ main {
 .main_title {
     font-size: 48px;
     font-weight: bold;
+    margin-bottom: 20px;
 }
 
 .main_contents {
     display: block;
-    font-size: 13px;
+    font-size: 15px;
     line-height: 25px;
 }
 
