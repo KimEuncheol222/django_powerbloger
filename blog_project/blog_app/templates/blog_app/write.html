@@ -101,7 +101,7 @@
     </body>
     <script>
         $(document).ready(function() {
-        $('#summernote').summernote();  // content 필드에 Summernote 적용
+            $('#id_content').summernote();  // content 필드에 Summernote 적용
         });
         
         document.addEventListener("DOMContentLoaded", function () {
@@ -148,11 +148,6 @@
             window.location.href = "{% url 'temporary_posts' %}";
         });
 
-        /* 임시저장버튼 클릭 시 알림창 */
-        {% comment %} document.getElementById("temp-save-button").addEventListener("click", function() {
-            alert('임시 저장되었습니다.');
-        }); {% endcomment %}
-
         /* AI 글 자동완성 기능 */
         document.getElementById('aiAutocompleteButton').addEventListener('click', function() {
             // 로딩 애니메이션 
@@ -172,13 +167,18 @@
             })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 document.getElementById('loading-animation').style.display = 'none';
                 document.getElementById('ai-img').style.display = 'block';
         
-                //기존 내용에 자동완성 된 내용 더함
-                let currentContent = summernote.activeEditor.getContent();
+                //기존 내용에 자동완성된 내용 추가
+
+                let currentContent = $('#id_content').summernote('code'); 
+                console.log(currentContent);
                 data.message = data.message.replace(/\n/g, '<br>');
-                summernote.activeEditor.setContent(currentContent + data.message); 
+                console.log(data.message);
+                $('#id_content').summernote('code', currentContent + data.message);
+
             })
             .catch(error => {
                 console.error('Error:', error);

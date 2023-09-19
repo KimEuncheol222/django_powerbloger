@@ -340,7 +340,7 @@ def autocomplete(request):
         except Exception as e:
             message = str(e)
         return JsonResponse({"message": message})
-    return render(request, 'blog_app/write.html')
+    return render(request, 'autocomplete.html')
 
 
 @login_required
