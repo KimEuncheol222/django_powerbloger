@@ -85,7 +85,7 @@
                         {% endfor %}
                     </div>
 
-                    <div class="article_container">
+                    <div class="article_container_second">
                         <!-- 둘째 줄 -->
                         {% for post in recents_posts %}
                         <div class="article_post_item_second">
@@ -97,17 +97,18 @@
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:300|safe|linebreaks|striptags }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
                             </a>
                         </div>
                         {% endfor %}
                     </div>
+                </div>
 
-                    <!-- 필터 적용 부분 -->
-
+                <!-- 필터 적용 부분 -->
+                <div class="article_form_second">
                     <div class="article_container">
                         <!-- 첫째 줄 -->
-                        {% for post in daily_posts|slice:":3" %}
+                        {% for post in daily_posts %}
                         <div class="article_post_item">
                             <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
                                 {% if post.image %}
@@ -123,9 +124,9 @@
                         {% endfor %}
                     </div>
 
-                    <div class="article_container">
+                    <div class="article_container_second">
                         <!-- 둘째 줄 -->
-                        {% for post in daily_posts|slice:"3:6" %}
+                        {% for post in dailys_posts %}
                         <div class="article_post_item_second">
                             <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
                                 {% if post.image %}

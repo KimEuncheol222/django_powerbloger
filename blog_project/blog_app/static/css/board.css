@@ -287,7 +287,25 @@ main {
 }
 
 /* article */
+
+/* .article_form {
+    display: none;
+} */
+
 .article_form {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+}
+
+/* .article_form_second {
+    display: none;
+} */
+
+.article_form_second {
     width: 80%;
     display: flex;
     flex-direction: column;
@@ -302,7 +320,7 @@ main {
     display: flex;
     justify-content: space-between;
     margin: 0;
-    margin-bottom: 18px;
+    margin-top: 18px;
 }
 
 .article_container_second {
@@ -318,12 +336,14 @@ main {
     width: 320px;
     height: auto;
     overflow-wrap: break-all;
+    /* border: 2px solid blue; */
 }
 
 .article_post_item_second {
     width: 320px;
     height: auto;
     overflow-wrap: break-all;
+    /* border: 2px solid blue; */
 }
 
 .article_post_date,
