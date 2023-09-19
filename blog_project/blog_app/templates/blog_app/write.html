@@ -53,7 +53,7 @@
                 {% csrf_token %}
                 <div class="write-box">
                     <input type="text" id="title" name="title" class="title" placeholder="제목" value="{{ write_form.title.value|default:'' }}" />
-                    <div class="content">{{ write_form.content }}</div>
+                    <div class="content" id="summernote">{{ write_form.content }}</div>
                 </div>
 
                 <div class="post-info-box">
@@ -101,7 +101,7 @@
     </body>
     <script>
         $(document).ready(function() {
-        $('#id_content').summernote();  // content 필드에 Summernote 적용
+        $('#summernote').summernote();  // content 필드에 Summernote 적용
         });
 
 
@@ -161,29 +161,30 @@
             document.getElementById('ai-img').style.display = 'none';
 
             let title = document.getElementById('title').value;
-            fetch('/write/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': '{{ csrf_token }}',
-            },
-            body: new URLSearchParams({
-                'title': title
-            })
+            fetch('/autocomplete/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: new URLSearchParams({
+                    'title': title
+                })
             })
             .then(response => response.json())
             .then(data => {
-            document.getElementById('loading-animation').style.display = 'none';
-            document.getElementById('ai-img').style.display = 'block';
+                document.getElementById('loading-animation').style.display = 'none';
+                document.getElementById('ai-img').style.display = 'block';
         
-            //기존 내용에 자동완성 된 내용 더함
-            let currentContent = summernote.activeEditor.getContent();
-            data.message = data.message.replace(/\n/g, '<br>');
-            summernote.activeEditor.setContent(currentContent + data.message);
+                //기존 내용에 자동완성 된 내용 더함
+                let currentContent = summernote.activeEditor.getContent();
+                /* let currentContent = $('#summernote').summernote('code'); */
+                data.message = data.message.replace(/\n/g, '<br>');
+                summernote.activeEditor.setContent(currentContent + data.message);
             })
             .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('loading-animation').style.display = 'none';
+                console.error('Error:', error);
+                document.getElementById('loading-animation').style.display = 'none';
             });
         });
         
