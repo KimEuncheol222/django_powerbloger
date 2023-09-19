@@ -12,6 +12,7 @@ from .forms import SearchForm
 from django.conf import settings
 from bs4 import BeautifulSoup
 from django.utils import timezone
+import openai 
 
 # 로그인 views
 def login_view(request):
@@ -176,7 +177,7 @@ def write(request, post_id=None):
                 blog_post.is_draft = True
                 blog_post.save()
                 # JSON 응답으로 토스트 메시지만 반환 (페이지 이동 없음)
-                response_data = {'message': '포스트가 임시 저장되었습니다.'}
+                response_data = {'message': 'temporary save success!'}
                 return JsonResponse(response_data)
             
             blog_post.save()
@@ -242,6 +243,9 @@ def load_temporary_post(request, temp_post_id):
     write_form = BlogPostForm(initial=form_data)
     
     return render(request, 'blog_app/write.html', {'write_form': write_form})
+
+
+# 헤더 토픽별 필터링 기능
 def filter_daily(request):
     daily_posts = BlogPost.objects.filter(topic__name='일상')
     context = {'daily_posts': daily_posts}
@@ -266,3 +270,25 @@ def filter_it(request):
     it_posts = BlogPost.objects.filter(topic__name='IT')
     context = {'daily_posts': it_posts}
     return render(request, 'blog_app/board.html', context)
+
+
+# AI 글 자동완성 기능
+def autocomplete(request):
+    if request.method == "POST":
+
+        #제목 필드값 가져옴
+        prompt = request.POST.get('title')
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt},
+                ],
+            )
+            # 반환된 응답에서 텍스트 추출해 변수에 저장
+            message = response['choices'][0]['message']['content']
+        except Exception as e:
+            message = str(e)
+        return JsonResponse({"message": message})
+    return render(request, 'write.html')

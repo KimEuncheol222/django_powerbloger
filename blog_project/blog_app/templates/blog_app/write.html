@@ -81,7 +81,7 @@
                             
                             {% else %}
                             <div id="temp-list">임시저장목록</div>
-                            <input type="submit" name="temp-save-button" class="temp-save-button" value="임시저장" />
+                            <input type="submit" name="temp-save-button" class="temp-save-button" id="temp-save-button" value="임시저장" />
                             <input type="submit" name="save-button" class="save-button" value="글 작성" />
                             {% endif %}
                         </div>
@@ -148,6 +148,45 @@
         document.getElementById("temp-list").addEventListener("click", function() {
             window.location.href = "{% url 'temporary_posts' %}";
         });
+
+        /* 임시저장버튼 클릭 시 알림창*/
+        document.getElementById("temp-save-button").addEventListener("click", function() {
+            alert('임시 저장되었습니다.');
+        });
+
+        /* AI 글 자동완성 기능 */
+        document.getElementById('aiAutocompleteButton').addEventListener('click', function() {
+            // 로딩 애니메이션 
+            document.getElementById('loading-animation').style.display = 'block';
+            document.getElementById('ai-img').style.display = 'none';
+
+            let title = document.getElementById('title').value;
+            fetch('/autocomplete/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: new URLSearchParams({
+                'title': title
+            })
+            })
+            .then(response => response.json())
+            .then(data => {
+            document.getElementById('loading-animation').style.display = 'none';
+            document.getElementById('ai-img').style.display = 'block';
+        
+            //기존 내용에 자동완성 된 내용 더함
+            let currentContent = tinyMCE.activeEditor.getContent();
+            data.message = data.message.replace(/\n/g, '<br>');
+            tinyMCE.activeEditor.setContent(currentContent + data.message);
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('loading-animation').style.display = 'none';
+            });
+        });
+        summernote.activeEditor.setContent(currentContent + data.message);
         
     </script>
     
