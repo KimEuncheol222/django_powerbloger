@@ -178,9 +178,8 @@
         
                 //기존 내용에 자동완성 된 내용 더함
                 let currentContent = summernote.activeEditor.getContent();
-                /* let currentContent = $('#summernote').summernote('code'); */
                 data.message = data.message.replace(/\n/g, '<br>');
-                summernote.activeEditor.setContent(currentContent + data.message);
+                summernote.activeEditor.setContent(currentContent + data.message); 
             })
             .catch(error => {
                 console.error('Error:', error);
