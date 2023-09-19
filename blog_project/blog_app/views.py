@@ -242,27 +242,58 @@ def load_temporary_post(request, temp_post_id):
     write_form = BlogPostForm(initial=form_data)
     
     return render(request, 'blog_app/write.html', {'write_form': write_form})
+# def filter_daily(request):
+#     daily_posts = BlogPost.objects.filter(topic__name='일상')
+#     context = {'daily_posts': daily_posts}
+#     return render(request, 'blog_app/board.html', context)
+
+# def filter_cook(request):
+#     cook_posts = BlogPost.objects.filter(topic__name='요리')
+#     context = {'daily_posts': cook_posts}
+#     return render(request, 'blog_app/board.html', context)
+
+# def filter_travel(request):
+#     travel_posts = BlogPost.objects.filter(topic__name='여행')
+#     context = {'daily_posts': travel_posts}
+#     return render(request, 'blog_app/board.html', context)
+
+# def filter_movie(request):
+#     movie_posts = BlogPost.objects.filter(topic__name='영화')
+#     context = {'daily_posts': movie_posts}
+#     return render(request, 'blog_app/board.html', context)
+
+# def filter_it(request):
+#     it_posts = BlogPost.objects.filter(topic__name='IT')
+#     context = {'daily_posts': it_posts}
+#     return render(request, 'blog_app/board.html', context)
+
+
 def filter_daily(request):
-    daily_posts = BlogPost.objects.filter(topic__name='일상')
-    context = {'daily_posts': daily_posts}
+    daily_posts = BlogPost.objects.filter(topic__name='일상').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    dailys_posts = BlogPost.objects.filter(topic__name='일상').order_by('-created_at')[3:6]
+    context = {'recent_posts': daily_posts, 'recents_posts': dailys_posts}
     return render(request, 'blog_app/board.html', context)
 
 def filter_cook(request):
-    cook_posts = BlogPost.objects.filter(topic__name='요리')
-    context = {'daily_posts': cook_posts}
+    cook_posts = BlogPost.objects.filter(topic__name='요리').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    cooks_posts = BlogPost.objects.filter(topic__name='요리').order_by('-created_at')[3:6]
+    context = {'recent_posts': cook_posts, 'recents_posts': cooks_posts}
     return render(request, 'blog_app/board.html', context)
 
 def filter_travel(request):
-    travel_posts = BlogPost.objects.filter(topic__name='여행')
-    context = {'daily_posts': travel_posts}
+    travel_posts = BlogPost.objects.filter(topic__name='여행').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    travels_posts = BlogPost.objects.filter(topic__name='여행').order_by('-created_at')[3:6]
+    context = {'recent_posts': travel_posts, 'recents_posts': travels_posts}
     return render(request, 'blog_app/board.html', context)
 
 def filter_movie(request):
-    movie_posts = BlogPost.objects.filter(topic__name='영화')
-    context = {'daily_posts': movie_posts}
+    movie_posts = BlogPost.objects.filter(topic__name='영화').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    movies_posts = BlogPost.objects.filter(topic__name='영화').order_by('-created_at')[3:6]
+    context = {'recent_posts': movie_posts, 'recents_posts': movies_posts}
     return render(request, 'blog_app/board.html', context)
 
 def filter_it(request):
-    it_posts = BlogPost.objects.filter(topic__name='IT')
-    context = {'daily_posts': it_posts}
+    it_posts = BlogPost.objects.filter(topic__name='IT').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    its_posts = BlogPost.objects.filter(topic__name='IT').order_by('-created_at')[3:6]
+    context = {'recent_posts': it_posts, 'recents_posts': its_posts}
     return render(request, 'blog_app/board.html', context)
