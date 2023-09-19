@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 from django.utils import timezone
 import openai 
 
+
 # 로그인 views
 def login_view(request):
     # POST요청이 들어온다면
@@ -30,9 +31,11 @@ def login_view(request):
         
     return render(request, 'registration/login.html')
 
+
 # social 로그인
 def social_login_view(request):
     return render(request, 'registration/login.html')
+
 
 # 로그아웃 views
 def logout_view(request):
@@ -42,8 +45,8 @@ def logout_view(request):
         return redirect('login')
     return render(request, 'registration/login.html')
 
-# 회원가입 views
 
+# 회원가입 views
 def signup_view(request):
     if request.method == 'POST':
         if request.POST['password'] == request.POST['password_confirm']:
@@ -66,6 +69,7 @@ def signup_view(request):
                 return render(request, 'registration/signup.html', {'signup_error': '입력이 잘못됐습니다.'})
     return render(request, 'registration/signup.html')
 
+
 def find_password(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -77,6 +81,7 @@ def find_password(request):
             # 사용자가 존재하지 않는 경우에 대한 처리
             return render(request, 'registration/find_password.html', {'new_error':'ID와 전화번호를 확인해주세요.'})
     return render(request, 'registration/find_password.html')
+
 
 def new_password(request, username):
     user = CustomUser.objects.get(username=username)
@@ -91,6 +96,7 @@ def new_password(request, username):
             # 비밀번호가 일치하지 않을 때의 처리
             return render(request, 'registration/new_password.html', {'password_error':'비밀번호가 일치하지 않습니다.'})
     return render(request, 'registration/new_password.html')
+
 
 def board(request):
     recent_posts = BlogPost.objects.order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
@@ -194,6 +200,7 @@ def write(request, post_id=None):
 def find_password(request):
     return render(request, 'registration/find_password.html')
 
+
 def new_password(request):
     return render(request, 'registration/new_password.html')
 
@@ -243,30 +250,28 @@ def load_temporary_post(request, temp_post_id):
     write_form = BlogPostForm(initial=form_data)
     
     return render(request, 'blog_app/write.html', {'write_form': write_form})
-# def filter_daily(request):
-#     daily_posts = BlogPost.objects.filter(topic__name='일상')
-#     context = {'daily_posts': daily_posts}
-#     return render(request, 'blog_app/board.html', context)
 
-# def filter_cook(request):
-#     cook_posts = BlogPost.objects.filter(topic__name='요리')
-#     context = {'daily_posts': cook_posts}
-#     return render(request, 'blog_app/board.html', context)
 
-# def filter_travel(request):
-#     travel_posts = BlogPost.objects.filter(topic__name='여행')
-#     context = {'daily_posts': travel_posts}
-#     return render(request, 'blog_app/board.html', context)
+def delete_temporary_post(request, temp_post_id):
+    if request.method == 'DELETE':
+        try:
+            # 삭제할 임시 글을 가져옴
+            temp_post = TemporaryBlogPost.objects.get(pk=temp_post_id)
 
-# def filter_movie(request):
-#     movie_posts = BlogPost.objects.filter(topic__name='영화')
-#     context = {'daily_posts': movie_posts}
-#     return render(request, 'blog_app/board.html', context)
-
-# def filter_it(request):
-#     it_posts = BlogPost.objects.filter(topic__name='IT')
-#     context = {'daily_posts': it_posts}
-#     return render(request, 'blog_app/board.html', context)
+            # 현재 사용자가 해당 임시 글의 저자인지 확인
+            if temp_post.author == request.user:
+                temp_post.delete()
+                # 삭제 성공 응답
+                return JsonResponse({'success': True})
+            else:
+                # 권한이 없는 사용자가 글을 삭제하려고 시도
+                return JsonResponse({'success': False, 'error': '글을 삭제할 권한이 없습니다.'})
+        except TemporaryBlogPost.DoesNotExist:
+            # 임시 글이 존재하지 않음
+            return JsonResponse({'success': False, 'error': '임시 글이 존재하지 않습니다.'})
+    else:
+        # 유효하지 않은 요청 메서드
+        return JsonResponse({'success': False, 'error': '유효하지 않은 요청 메서드입니다.'})
 
 
 def filter_daily(request):
@@ -275,11 +280,13 @@ def filter_daily(request):
     context = {'recent_posts': daily_posts, 'recents_posts': dailys_posts}
     return render(request, 'blog_app/board.html', context)
 
+
 def filter_cook(request):
     cook_posts = BlogPost.objects.filter(topic__name='요리').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
     cooks_posts = BlogPost.objects.filter(topic__name='요리').order_by('-created_at')[3:6]
     context = {'recent_posts': cook_posts, 'recents_posts': cooks_posts}
     return render(request, 'blog_app/board.html', context)
+
 
 def filter_travel(request):
     travel_posts = BlogPost.objects.filter(topic__name='여행').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
@@ -287,11 +294,13 @@ def filter_travel(request):
     context = {'recent_posts': travel_posts, 'recents_posts': travels_posts}
     return render(request, 'blog_app/board.html', context)
 
+
 def filter_movie(request):
     movie_posts = BlogPost.objects.filter(topic__name='영화').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
     movies_posts = BlogPost.objects.filter(topic__name='영화').order_by('-created_at')[3:6]
     context = {'recent_posts': movie_posts, 'recents_posts': movies_posts}
     return render(request, 'blog_app/board.html', context)
+
 
 def filter_it(request):
     it_posts = BlogPost.objects.filter(topic__name='IT').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기

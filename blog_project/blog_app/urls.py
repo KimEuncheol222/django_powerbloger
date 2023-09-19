@@ -19,6 +19,7 @@ urlpatterns = [
     path('save_temporary_post/', views.save_temporary_post, name='save_temporary_post'),
     path('temporary_posts/', views.temporary_posts, name='temporary_posts'),
     path('load_temporary_post/<int:temp_post_id>/', views.load_temporary_post, name='load_temporary_post'),
+    path('delete_temporary_post/<int:temp_post_id>/', views.delete_temporary_post, name='delete_temporary_post'),
     path('filter/daily/', views.filter_daily, name='filter_daily'),
     path('filter/cook/', views.filter_cook, name='filter_cook'),
     path('filter/travel/', views.filter_travel, name='filter_travel'),
