@@ -149,10 +149,10 @@
             window.location.href = "{% url 'temporary_posts' %}";
         });
 
-        /* 임시저장버튼 클릭 시 알림창*/
-        document.getElementById("temp-save-button").addEventListener("click", function() {
+        /* 임시저장버튼 클릭 시 알림창 */
+        {% comment %} document.getElementById("temp-save-button").addEventListener("click", function() {
             alert('임시 저장되었습니다.');
-        });
+        }); {% endcomment %}
 
         /* AI 글 자동완성 기능 */
         document.getElementById('aiAutocompleteButton').addEventListener('click', function() {
