@@ -80,7 +80,7 @@
                             <input type="submit" class="save-button" value="수정" />
                             
                             {% else %}
-                            <div>임시저장목록</div>
+                            <div id="temp-list">임시저장목록</div>
                             <input type="submit" name="temp-save-button" class="temp-save-button" value="임시저장" />
                             <input type="submit" name="save-button" class="save-button" value="글 작성" />
                             {% endif %}
@@ -143,6 +143,12 @@
                 });
             }
         });
+
+        /* 임시저장목록 페이지로 이동 */
+        document.getElementById("temp-list").addEventListener("click", function() {
+            window.location.href = "{% url 'temporary_posts' %}";
+        });
+        
     </script>
     
 </html>

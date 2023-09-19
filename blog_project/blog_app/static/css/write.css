@@ -243,6 +243,10 @@ h2 {
     margin-bottom: 10px;
 }
 
+#topic input[type="radio"] {
+    cursor: pointer;
+}
+
 .info {
     display: flex;
     flex-direction: column;
@@ -282,23 +286,26 @@ h2 {
     cursor: pointer;
 }
 
+#temp-list {
+    font-size: 15px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    width: 45%;
+    color: rgb(89, 77, 77);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+#temp-list:hover {
+    color: #000;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
 .temp {
     border: 1px #1e1e1e solid;
     background-color: transparent;
     color: #1e1e1e;
-}
-
-/* textarea{
-    resize: none;
-    height: 500px;
-} */
-
-/* a{
-    text-decoration: none;
-} */
-
-button {
-    cursor: pointer;
 }
 
 .ai-button {
@@ -321,6 +328,7 @@ button {
     margin-right: 10px;
 }
 
+/* 임시저장 관련 세용님 구현 */
 .toast-container {
     position: fixed;
     top: 20px; /* 상단 여백 조절 */
