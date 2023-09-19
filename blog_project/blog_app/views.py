@@ -273,7 +273,7 @@ def filter_it(request):
 
 
 # AI 글 자동완성 기능
-openai.api_key = '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'
+openai.api_key = settings.OPENAI_API_KEY
 
 def autocomplete(request):
     if request.method == "POST":
