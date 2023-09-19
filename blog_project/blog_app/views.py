@@ -12,6 +12,7 @@ from .forms import SearchForm
 from django.conf import settings
 from bs4 import BeautifulSoup
 from django.utils import timezone
+import openai 
 
 # 로그인 views
 def login_view(request):
@@ -176,7 +177,7 @@ def write(request, post_id=None):
                 blog_post.is_draft = True
                 blog_post.save()
                 # JSON 응답으로 토스트 메시지만 반환 (페이지 이동 없음)
-                response_data = {'message': '포스트가 임시 저장되었습니다.'}
+                response_data = {'message': 'temporary save success!'}
                 return JsonResponse(response_data)
             
             blog_post.save()
@@ -264,29 +265,84 @@ def delete_temporary_post(request, temp_post_id):
     else:
         # 유효하지 않은 요청 메서드
         return JsonResponse({'success': False, 'error': '유효하지 않은 요청 메서드입니다.'})
+    
+    
+# def filter_daily(request):
+#     daily_posts = BlogPost.objects.filter(topic__name='일상')
+#     context = {'daily_posts': daily_posts}
+#     return render(request, 'blog_app/board.html', context)
+
+# def filter_cook(request):
+#     cook_posts = BlogPost.objects.filter(topic__name='요리')
+#     context = {'daily_posts': cook_posts}
+#     return render(request, 'blog_app/board.html', context)
+
+# def filter_travel(request):
+#     travel_posts = BlogPost.objects.filter(topic__name='여행')
+#     context = {'daily_posts': travel_posts}
+#     return render(request, 'blog_app/board.html', context)
+
+# def filter_movie(request):
+#     movie_posts = BlogPost.objects.filter(topic__name='영화')
+#     context = {'daily_posts': movie_posts}
+#     return render(request, 'blog_app/board.html', context)
+
+# def filter_it(request):
+#     it_posts = BlogPost.objects.filter(topic__name='IT')
+#     context = {'daily_posts': it_posts}
+#     return render(request, 'blog_app/board.html', context)
 
 
 def filter_daily(request):
-    daily_posts = BlogPost.objects.filter(topic__name='일상')
-    context = {'daily_posts': daily_posts}
+    daily_posts = BlogPost.objects.filter(topic__name='일상').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    dailys_posts = BlogPost.objects.filter(topic__name='일상').order_by('-created_at')[3:6]
+    context = {'recent_posts': daily_posts, 'recents_posts': dailys_posts}
     return render(request, 'blog_app/board.html', context)
 
 def filter_cook(request):
-    cook_posts = BlogPost.objects.filter(topic__name='요리')
-    context = {'daily_posts': cook_posts}
+    cook_posts = BlogPost.objects.filter(topic__name='요리').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    cooks_posts = BlogPost.objects.filter(topic__name='요리').order_by('-created_at')[3:6]
+    context = {'recent_posts': cook_posts, 'recents_posts': cooks_posts}
     return render(request, 'blog_app/board.html', context)
 
 def filter_travel(request):
-    travel_posts = BlogPost.objects.filter(topic__name='여행')
-    context = {'daily_posts': travel_posts}
+    travel_posts = BlogPost.objects.filter(topic__name='여행').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    travels_posts = BlogPost.objects.filter(topic__name='여행').order_by('-created_at')[3:6]
+    context = {'recent_posts': travel_posts, 'recents_posts': travels_posts}
     return render(request, 'blog_app/board.html', context)
 
 def filter_movie(request):
-    movie_posts = BlogPost.objects.filter(topic__name='영화')
-    context = {'daily_posts': movie_posts}
+    movie_posts = BlogPost.objects.filter(topic__name='영화').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    movies_posts = BlogPost.objects.filter(topic__name='영화').order_by('-created_at')[3:6]
+    context = {'recent_posts': movie_posts, 'recents_posts': movies_posts}
     return render(request, 'blog_app/board.html', context)
 
 def filter_it(request):
-    it_posts = BlogPost.objects.filter(topic__name='IT')
-    context = {'daily_posts': it_posts}
+    it_posts = BlogPost.objects.filter(topic__name='IT').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    its_posts = BlogPost.objects.filter(topic__name='IT').order_by('-created_at')[3:6]
+    context = {'recent_posts': it_posts, 'recents_posts': its_posts}
     return render(request, 'blog_app/board.html', context)
+
+
+# AI 글 자동완성 기능
+openai.api_key = settings.OPENAI_API_KEY
+
+def autocomplete(request):
+    if request.method == "POST":
+
+        #제목 필드값 가져옴
+        prompt = request.POST.get('title')
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt},
+                ],
+            )
+            # 반환된 응답에서 텍스트 추출해 변수에 저장
+            message = response['choices'][0]['message']['content']
+        except Exception as e:
+            message = str(e)
+        return JsonResponse({"message": message})
+    return render(request, 'write.html')
