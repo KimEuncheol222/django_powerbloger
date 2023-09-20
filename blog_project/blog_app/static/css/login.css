@@ -6,6 +6,7 @@
 
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #f9f8f4;
@@ -22,7 +23,7 @@ body {
 
 .login_container {
     width: 300px;
-    height: 264px;
+    height: 340px;
     background-color: #fff;
     border: solid 1px #cac8c5;
     border-radius: 2px;
@@ -72,7 +73,7 @@ input::placeholder {
     color: #1e1e1e;
     font-size: 20px;
     font-weight: 900;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 .func_container {
@@ -111,4 +112,128 @@ input::placeholder {
 .signup_btn:hover::after,
 .find_pwd:hover::after {
     transform: scaleX(1);
+}
+
+.divide_line {
+    width: 90%;
+    height: 18px;
+    border-bottom: 1px solid #cac8c5;
+}
+
+/* .social_container {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    border: 1px solid red;
+} */
+
+.social_btn_google {
+    width: 200px;
+    height: 36px;
+    display: flex;
+    text-decoration: none;
+    position: relative;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    color: #1e1e1e;
+    background-color: #ffffff;
+    border: 1px solid #1fa0ef;
+    border-radius: 2px;
+    margin-top: 20px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.google_logo {
+    display: flex;
+    width: 25px;
+    height: 25px;
+    margin-right: 14px;
+}
+
+.google_span {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.social_btn_naver {
+    width: 200px;
+    height: 36px;
+    display: flex;
+    text-decoration: none;
+    position: relative;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    color: #f9f8f4;
+    background-color: #02c759;
+    border-radius: 2px;
+    font-size: 14px;
+}
+
+.naver_logo {
+    display: flex;
+    position: absolute;
+    left: 18.5px;
+    width: 16px;
+    height: 16px;
+    margin-right: 16px;
+}
+
+.naver_span {
+    display: flex;
+    position: absolute;
+    left: 53px;
+}
+
+.naver_span_2 {
+    display: flex;
+    position: absolute;
+    font-weight: bold;
+    left: 129px;
+}
+
+.home_btn {
+    display: flex;
+    text-decoration: none;
+    position: relative;
+    color: #777777;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-right: 24px;
+}
+
+.home_btn::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #777777;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.home_btn:hover::after {
+    transform: scaleX(1);
+}
+
+.home_logo {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 24px;
+    height: 24px;
+}
+
+.home_span {
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
 }

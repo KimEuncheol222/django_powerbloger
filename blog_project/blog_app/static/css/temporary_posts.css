@@ -1,0 +1,82 @@
+/* temporary_posts.css */
+
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f9fc;
+}
+
+/* 헤더 스타일 */
+.temporary-header {
+    background-color: #1e1e1e;;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+/* 글 목록 스타일 */
+.temporary-post-list {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 개별 포스트 스타일 */
+.temporary-post {
+    background-color: #fff;
+    border: 1px solid #e1e4e8;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+/* 포스트 제목 스타일 */
+.temporary-post-title a {
+    color: #0366d6;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* 포스트 내용 스타일 */
+.temporary-post-content {
+    margin-top: 10px;
+}
+
+/* 포스트 시간 스타일 */
+.temporary-post-time {
+    color: #6a737d;
+    font-size: 14px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+/* 삭제 버튼 컨테이너 스타일 */
+.delete-button-container {
+    position: relative;
+    display: flex; /* 컨테이너를 플렉스박스로 설정 */
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    align-items: flex-start; /* 위쪽 정렬 */
+    margin-top: 10px; /* 위쪽 여백 추가 */
+}
+
+/* 삭제 버튼 스타일 */
+.delete-temp-post-button {
+    background-color: #fff;
+    border: none; /* 테두리 없애기 */
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px 10px;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+    border-radius: 5px;
+}
+
+/* 삭제 버튼 호버 스타일 (빨간색으로 변경) */
+.delete-temp-post-button:hover {
+    color: #ff0000; /* 빨간색으로 변경 */
+}

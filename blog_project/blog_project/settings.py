@@ -51,10 +51,41 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'blog_app',
     'rest_framework',
     'django_summernote',
+    'social_django',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.socialaccount',
 ]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '984015881202-br0esmka32fmcjhs0j2mkri7om51s9bc.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://127.0.0.1:8000/complete/google-oauth2/'
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.naver.NaverOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+SOCIAL_AUTH_AUTHENTICATION_BACKENDS = [
+    'social_core.backends.naver.NaverOAuth2',
+    'social_core.backends.google.GoogleOAuth2'
+]
+
+# naver social login setting
+SOCIAL_AUTH_NAVER_KEY = 'KFaTW1Rl9ZIg2V5eyp7p'
+SOCIAL_AUTH_NAVER_SECRET = '0UFn1kFP4B'
+
+# login setting
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'board'
+SITE_ID = 2
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_ON_GET = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -101,6 +132,9 @@ DATABASES = {
     }
 }
 
+# openai ChatGPT API
+OPENAI_API_KEY = env("OPENAI_API_KEY")
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -136,7 +170,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

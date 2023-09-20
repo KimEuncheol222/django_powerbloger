@@ -1,13 +1,19 @@
-from django.contrib.auth.models import User
 from django.contrib import auth
 from django.shortcuts import render, redirect, get_object_or_404
+from .models import CustomUser, BlogPost, TemporaryBlogPost
+from .forms import BlogPostForm, BlogPost, SearchForm, CommentForm
+from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from .models import CustomUser, BlogPost
-from .serializers import BlogPostSerializer
 from .forms import BlogPostForm
 from django.db.models import Q
 from .forms import SearchForm
 from django.conf import settings
 from bs4 import BeautifulSoup
+from django.utils import timezone
+import openai 
+
 
 # 로그인 views
 def login_view(request):
@@ -25,6 +31,12 @@ def login_view(request):
         
     return render(request, 'registration/login.html')
 
+
+# social 로그인
+def social_login_view(request):
+    return render(request, 'registration/login.html')
+
+
 # 로그아웃 views
 def logout_view(request):
     # 로그아웃 성공시 로그인 화면으로
@@ -33,8 +45,8 @@ def logout_view(request):
         return redirect('login')
     return render(request, 'registration/login.html')
 
-# 회원가입 views
 
+# 회원가입 views
 def signup_view(request):
     if request.method == 'POST':
         if request.POST['password'] == request.POST['password_confirm']:
@@ -57,6 +69,7 @@ def signup_view(request):
                 return render(request, 'registration/signup.html', {'signup_error': '입력이 잘못됐습니다.'})
     return render(request, 'registration/signup.html')
 
+
 def find_password(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -68,6 +81,7 @@ def find_password(request):
             # 사용자가 존재하지 않는 경우에 대한 처리
             return render(request, 'registration/find_password.html', {'new_error':'ID와 전화번호를 확인해주세요.'})
     return render(request, 'registration/find_password.html')
+
 
 def new_password(request, username):
     user = CustomUser.objects.get(username=username)
@@ -83,27 +97,37 @@ def new_password(request, username):
             return render(request, 'registration/new_password.html', {'password_error':'비밀번호가 일치하지 않습니다.'})
     return render(request, 'registration/new_password.html')
 
+
 def board(request):
     recent_posts = BlogPost.objects.order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
-    context = {'recent_posts': recent_posts}
+    recents_posts = BlogPost.objects.order_by('-created_at')[3:6]
+    context = {'recent_posts': recent_posts, 'recents_posts': recents_posts}
     return render(request, 'blog_app/board.html', context)
 
+
+# 포스트 상세보기
 def post(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id)  # 해당 포스트를 가져오거나 404 에러 반환
 
     if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
+            return redirect('post', post_id=post.id)
+    else:
+        form = CommentForm()
         
         # 요청에 삭제가 포함된경우
-        if 'delete-button' in request.POST:
-            post.delete()
-            return redirect('board')
+    if 'delete-button' in request.POST:
+        post.delete()
+        return redirect('board')
     
     # 조회수 증가 및 db에 저장
     post.views += 1 
     post.save() 
-
-    # 글쓴이 표시
-    post.author_id = request.user.username
 
     # 이전/다음 게시물 가져옴
     previous_post = BlogPost.objects.filter(id__lt=post.id, is_draft=False).order_by('-id').first()
@@ -124,28 +148,68 @@ def post(request, post_id):
         'next_post': next_post,
         'recommended_posts': recommended_posts,
         'MEDIA_URL': settings.MEDIA_URL,
+        'form': form,
     }
 
     return render(request, 'blog_app/post.html', context)
 
-def write(request):
+
+# 포스트 등록 처리
+@login_required
+def write(request, post_id=None):
+
+    # 글 수정 페이지
+    if post_id:
+        blog_post = get_object_or_404(BlogPost, id=post_id)
+        edit_mode = True
+
+    # 글쓰기 페이지의 경우, 임시저장한 글이 있는지 검색 
+    else:
+        blog_post = BlogPost.objects.filter(author_id=request.user, is_draft=True).order_by('-created_at').first()
+        edit_mode = False
+
+    # 업로드 / 수정 버튼 클릭
     if request.method == 'POST':
-        write_form = BlogPostForm(request.POST)
+        write_form = BlogPostForm(request.POST, instance=blog_post)
         if write_form.is_valid():
             blog_post = write_form.save(commit=False)
             blog_post.author = request.user
-            blog_post.is_draft = False
+            blog_post.updated_at = timezone.now()
+
+            # 게시물 삭제
+            if 'delete-button' in request.POST:
+                blog_post.delete() 
+                return redirect('board') 
+
+            # '저장' 버튼이 눌린 경우
+            if 'save-button' in request.POST:
+                blog_post.is_draft = False
+                blog_post.save()
+                # 포스트가 저장되면 해당 포스트 페이지로 이동
+                return redirect('post', post_id=blog_post.id)
+
+            # '임시저장' 버튼이 눌린 경우
+            elif 'temp-save-button' in request.POST:
+                blog_post.is_draft = True
+                blog_post.save()
+                # JSON 응답으로 토스트 메시지만 반환 (페이지 이동 없음)
+                response_data = {'message': 'temporary save success!'}
+                return JsonResponse(response_data)
+            
             blog_post.save()
-            return redirect('post', post_id=blog_post.id)   
+            return redirect('post', post_id=blog_post.id)
+            
     else:
-        write_form = BlogPostForm(initial={'is_draft': False})
+        write_form = BlogPostForm(instance=blog_post)
 
-    return render(request, 'blog_app/write.html', {'write_form': write_form})
+    context = {'write_form': write_form, 'blog_post': blog_post, 'edit_mode': edit_mode, 'MEDIA_URL': settings.MEDIA_URL}
 
+    return render(request, 'blog_app/write.html', context)
 
 
 def find_password(request):
     return render(request, 'registration/find_password.html')
+
 
 def new_password(request):
     return render(request, 'registration/new_password.html')
@@ -162,27 +226,136 @@ def search_view(request):
             return render(request, 'blog_app/search.html', {'results': results})
     return render(request, 'blog_app/search.html', {'results': []})
 
+
+# 임시저장기능
+def save_temporary_post(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        user = request.user
+
+        # TemporaryBlogPost 모델의 객체를 생성하고 저장
+        temporary_post = TemporaryBlogPost(author=user, title=title, content=content)
+        temporary_post.save()
+
+        # JSON 응답 반환
+        response_data = {'message': '포스트가 임시 저장되었습니다.'}
+        return JsonResponse(response_data)
+
+
+def temporary_posts(request):
+    # 임시저장된 글 목록 가져오기
+    temporary_posts = TemporaryBlogPost.objects.filter(author=request.user).order_by('-created_at')
+    return render(request, 'blog_app/temporary_posts.html', {'temporary_posts': temporary_posts})
+
+
+def load_temporary_post(request, temp_post_id):
+    temp_post = TemporaryBlogPost.objects.get(pk=temp_post_id)
+    
+    # TemporaryBlogPost 모델에서 데이터를 읽어온 후, 해당 데이터를 BlogPostForm으로 초기화
+    form_data = {
+        'title': temp_post.title,
+        'content': temp_post.content,
+    }
+    write_form = BlogPostForm(initial=form_data)
+    
+    return render(request, 'blog_app/write.html', {'write_form': write_form})
+
+
+def delete_temporary_post(request, temp_post_id):
+    if request.method == 'DELETE':
+        try:
+            # 삭제할 임시 글을 가져옴
+            temp_post = TemporaryBlogPost.objects.get(pk=temp_post_id)
+
+            # 현재 사용자가 해당 임시 글의 저자인지 확인
+            if temp_post.author == request.user:
+                temp_post.delete()
+                # 삭제 성공 응답
+                return JsonResponse({'success': True})
+            else:
+                # 권한이 없는 사용자가 글을 삭제하려고 시도
+                return JsonResponse({'success': False, 'error': '글을 삭제할 권한이 없습니다.'})
+        except TemporaryBlogPost.DoesNotExist:
+            # 임시 글이 존재하지 않음
+            return JsonResponse({'success': False, 'error': '임시 글이 존재하지 않습니다.'})
+    else:
+        # 유효하지 않은 요청 메서드
+        return JsonResponse({'success': False, 'error': '유효하지 않은 요청 메서드입니다.'})
+
+
 def filter_daily(request):
-    daily_posts = BlogPost.objects.filter(topic__name='일상')[:3]
-    context = {'daily_posts': daily_posts}
+    daily_posts = BlogPost.objects.filter(topic__name='일상').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    dailys_posts = BlogPost.objects.filter(topic__name='일상').order_by('-created_at')[3:6]
+    context = {'recent_posts': daily_posts, 'recents_posts': dailys_posts}
     return render(request, 'blog_app/board.html', context)
+
 
 def filter_cook(request):
-    cook_posts = BlogPost.objects.filter(topic__name='요리')[:3]
-    context = {'daily_posts': cook_posts}
+    cook_posts = BlogPost.objects.filter(topic__name='요리').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    cooks_posts = BlogPost.objects.filter(topic__name='요리').order_by('-created_at')[3:6]
+    context = {'recent_posts': cook_posts, 'recents_posts': cooks_posts}
     return render(request, 'blog_app/board.html', context)
+
 
 def filter_travel(request):
-    travel_posts = BlogPost.objects.filter(topic__name='여행')[:3]
-    context = {'daily_posts': travel_posts}
+    travel_posts = BlogPost.objects.filter(topic__name='여행').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    travels_posts = BlogPost.objects.filter(topic__name='여행').order_by('-created_at')[3:6]
+    context = {'recent_posts': travel_posts, 'recents_posts': travels_posts}
     return render(request, 'blog_app/board.html', context)
+
 
 def filter_movie(request):
-    movie_posts = BlogPost.objects.filter(topic__name='영화')[:3]
-    context = {'daily_posts': movie_posts}
+    movie_posts = BlogPost.objects.filter(topic__name='영화').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    movies_posts = BlogPost.objects.filter(topic__name='영화').order_by('-created_at')[3:6]
+    context = {'recent_posts': movie_posts, 'recents_posts': movies_posts}
     return render(request, 'blog_app/board.html', context)
 
+
 def filter_it(request):
-    it_posts = BlogPost.objects.filter(topic__name='IT')[:3]
-    context = {'daily_posts': it_posts}
+    it_posts = BlogPost.objects.filter(topic__name='IT').order_by('-created_at')[:3]  # 최근 게시물 3개 가져오기
+    its_posts = BlogPost.objects.filter(topic__name='IT').order_by('-created_at')[3:6]
+    context = {'recent_posts': it_posts, 'recents_posts': its_posts}
     return render(request, 'blog_app/board.html', context)
+
+
+# AI 글 자동완성 기능
+openai.api_key = settings.OPENAI_API_KEY
+
+def autocomplete(request):
+    if request.method == "POST":
+
+        #제목 필드값 가져옴
+        prompt = request.POST.get('title')
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt},
+                ],
+            )
+            # 반환된 응답에서 텍스트 추출해 변수에 저장
+            message = response['choices'][0]['message']['content']
+        except Exception as e:
+            message = str(e)
+        return JsonResponse({"message": message})
+    return render(request, 'autocomplete.html')
+
+
+@login_required
+def add_comment(request, post_id):
+    post = get_object_or_404(BlogPost, id=post_id)
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
+            return redirect('post', post_id=post.id)
+    else:
+        form = CommentForm()
+
+    return render(request, 'blog_app/add_comment.html', {'form': form})

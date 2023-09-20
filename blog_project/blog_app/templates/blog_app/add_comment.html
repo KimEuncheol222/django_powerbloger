@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment</title>
+</head>
+<body>
+
+    {% block content %}
+      <h2>댓글 작성</h2>
+      <form method="post" action="{% url 'add_comment' post.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">댓글 작성</button>
+      </form>
+      <a href="{% url 'post' post.id %}">게시물로 돌아가기</a>
+    {% endblock %}
+    
+</body>
+</html>

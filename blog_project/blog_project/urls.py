@@ -18,11 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django_summernote import urls as summernote_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog_app.urls')),
     path('summernote/', include('django_summernote.urls')),
+    path('', include('social_django.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:

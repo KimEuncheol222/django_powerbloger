@@ -4,33 +4,188 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="{% static 'css/write.css' %}" rel="stylesheet" />
+        <link rel="stylesheet" href="/static/css/write.css?{% now "U" %}"/>
         <link href="{% static 'summernote/summernote.css' %}" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{% static 'summernote/summernote.js' %}"></script>
         <title>Write</title>
     </head>
     <body>
         <header>
-            <div>MYLOG</div>
-            <div>일상</div>
-            <div>요리</div>
-            <div>여행</div>
-            <div>영화</div>
-            <div>IT</div>
-            <div>Logout</div>
-            <div>Just Write!</div>
+            <div class="header_container">
+                <div class="header_form">
+                    <div class="logo_image">
+                        <a href="{% url 'board' %}">
+                            <img src="{% static 'img/sample_logo_light.svg' %}" class="logo_image" />
+                        </a>
+                    </div>
+                    <div class="right_container">
+                        <div class="btn_container">
+                            <form method="get" action="{% url 'search' %}">
+                                {% csrf_token %}
+                        </div>
+                        <div class="btn_container">
+                            <form method="get" action="{% url 'search' %}">
+                                {% csrf_token %}
+                                <button type="submit"><img src="{% static 'img/magnifier_light.svg' %}" class="search_image" /></button>
+                            </form>
+                            <button class="header_btn" type="submit" id="dailyBtn"><a href="{% url 'filter_daily' %}">일상</a></button>
+                            <button class="header_btn" type="submit" id="cookBtn"><a href="{% url 'filter_cook' %}">요리</a></button>
+                            <button class="header_btn" type="submit" id="travelBtn"><a href="{% url 'filter_travel' %}">여행</a></button>
+                            <button class="header_btn" type="submit" id="movieBtn"><a href="{% url 'filter_movie' %}">영화</a></button>
+                            <button class="header_btn" type="submit" id="itBtn"><a href="{% url 'filter_it' %}">IT</a></button>
+                        </div>
+                        <div class="row_box">
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'board' %}" class="logout_btn">Logout</a>
+                            <a href="{% url 'write' %}" class="write_btn">Just Write!</a>
+                            {% else %}
+                            <a href="{% url 'login' %}" class="login_btn">Login</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </header>
+
         <section>
-            <form method="post" action="{% url 'write' %}">
+            <form method="post" action="{% if edit_mode %}{% url 'edit_post' blog_post.id %}{% else %}{% url 'write' %}{% endif %}" enctype="multipart/form-data" id="write-form">
                 {% csrf_token %}
-                {{ write_form.as_table }}
-                <button type="submit">등록</button>
+                <div class="write-box">
+                    <input type="text" id="title" name="title" class="title" placeholder="제목" value="{{ write_form.title.value|default:'' }}" />
+                    <div class="content" id="summernote">{{ write_form.content }}</div>
+                </div>
+
+                <div class="post-info-box">
+                    <button type="button" id="aiAutocompleteButton" class="ai-button">
+                        <img id="ai-img" src="{% static 'img/ai.svg' %}" alt="AI 아이콘" />
+                        <div id="loading-animation" style="display: none;">
+                        <img src="{% static 'img/loading.gif' %}" alt="로딩 중" />
+                        </div> 
+                    AI 글 자동완성
+                    </button>
+
+                    <div class="box" id="topic">
+                        <h2>TOPIC</h2>
+                        {{ write_form.topic }}
+                    </div>
+
+                    <div class="box" id="upload-info">
+                        <div class="info">
+                            <h2>UPLOAD INFO</h2>
+                        </div>
+                        <div class="save-box">
+                            {% if edit_mode %}
+                            <input type="submit" name="delete-button" class="delete-button" value="삭제" />
+                            <input type="submit" class="save-button" value="수정" />
+                            
+                            {% else %}
+                            <div id="temp-list">임시저장목록</div>
+                            <input type="submit" name="temp-save-button" class="temp-save-button" id="temp-save-button" value="임시저장" />
+                            <input type="submit" name="save-button" class="save-button" value="글 작성" />
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </form>
+            <div id="toast-container" class="toast-container">
+                <div id="toast-message" class="toast">
+                    포스트가 임시 저장되었습니다.
+                </div>
+            </div>
         </section>
+
+        <footer>
+
+        </footer>
     </body>
     <script>
         $(document).ready(function() {
-        $('#id_content').summernote();  // content 필드에 Summernote 적용
+            $('#id_content').summernote();  // content 필드에 Summernote 적용
         });
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const toastMessage = document.getElementById("toast-message");
+            const writeForm = document.getElementById("write-form");
+    
+            const showToast = () => {
+                toastMessage.style.display = "block";
+                setTimeout(() => {
+                    toastMessage.style.display = "none";
+                }, 5000); // 5초 후에 토스트 메시지를 숨김
+            };
+    
+            if (writeForm) {
+                writeForm.addEventListener("submit", (e) => {
+                    // 폼 데이터를 FormData 객체로 가져오기
+                    const formData = new FormData(writeForm);
+    
+                    // '임시저장' 버튼이 눌렸는지 확인
+                    const saveTemporaryButton = document.querySelector("[name='temp-save-button']");
+                    if (saveTemporaryButton && e.submitter === saveTemporaryButton) {
+                        e.preventDefault(); // 폼 제출을 막음
+    
+                        // '임시저장' 버튼을 눌렀을 때만 AJAX 요청 보냄
+                        fetch("{% url 'save_temporary_post' %}", {
+                            method: "POST",
+                            body: formData,
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                // 서버에서의 응답을 처리
+                                showToast();
+                            })
+                            .catch((error) => {
+                                console.error("에러 발생:", error);
+                            });
+                    }
+                });
+            }
+        });
+
+        /* 임시저장목록 페이지로 이동 */
+        document.getElementById("temp-list").addEventListener("click", function() {
+            window.location.href = "{% url 'temporary_posts' %}";
+        });
+
+        /* AI 글 자동완성 기능 */
+        document.getElementById('aiAutocompleteButton').addEventListener('click', function() {
+            // 로딩 애니메이션 
+            document.getElementById('loading-animation').style.display = 'block';
+            document.getElementById('ai-img').style.display = 'none';
+
+            let title = document.getElementById('title').value;
+            fetch('/autocomplete/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: new URLSearchParams({
+                    'title': title
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                document.getElementById('loading-animation').style.display = 'none';
+                document.getElementById('ai-img').style.display = 'block';
+        
+                //기존 내용에 자동완성된 내용 추가
+
+                let currentContent = $('#id_content').summernote('code'); 
+                console.log(currentContent);
+                data.message = data.message.replace(/\n/g, '<br>');
+                console.log(data.message);
+                $('#id_content').summernote('code', currentContent + data.message);
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('loading-animation').style.display = 'none';
+            });
+        });
+        
     </script>
+    
 </html>

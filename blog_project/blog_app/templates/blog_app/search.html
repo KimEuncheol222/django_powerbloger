@@ -20,13 +20,21 @@
         </div>
         <!-- 검색 결과 표시 -->
         <div class="search-results">
+            <a id="home-btn" href="{% url 'board' %}">Back to Home</a>
             <h1>검색 결과</h1>
             {% if results %}
                 <p class="result-count">총 <strong>{{ results|length }}</strong>개의 포스트를 찾았습니다.</p>
                 {% for post in results %}
                     <div class="post">
-                        <h2><a href="{% url 'post' post.id %}">{{ post.title }}</a></h2>
-                        <p>{{ post.content|safe }}</p>
+                        <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000;">
+                        {% if post.image %}
+                        <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
+                        {% else %}
+                        <div class="article_post-image"><img src="{% static 'img/bbang2.png' %}" alt="" /></div>              
+                        {% endif %}  
+                        <div class="article_post_title">{{ post.title }}</div>
+                        <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                        <div class="article_post_content">{{ post.content|truncatechars:300|safe|linebreaks|striptags }}</div>
                     </div>
                 {% empty %}
                     <p>검색 결과가 없습니다.</p>

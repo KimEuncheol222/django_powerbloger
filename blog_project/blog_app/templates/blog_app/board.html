@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="/static/css/board.css?{% now "U" %}"/>
+        <link rel="stylesheet" href="/static/css/board.css?{% now "U" %}">
         <title>Document</title>
     </head>
     <body>
@@ -20,14 +20,16 @@
                         <div class="btn_container">
                             <form method="get" action="{% url 'search' %}">
                                 {% csrf_token %}
-                                <button type="submit"><img src="{% static 'img/magnifier_dark.svg' %}" class="search_image" /></button>
+                                <button type="submit">
+                                    <img src="{% static 'img/magnifier_dark.svg' %}" class="search_image" />
+                                </button>
                             </form>
                             <button class="header_btn" type="submit" id="dailyBtn"><a href="{% url 'filter_daily' %}">일상</a></button>
                             <button class="header_btn" type="submit" id="cookBtn"><a href="{% url 'filter_cook' %}">요리</a></button>
                             <button class="header_btn" type="submit" id="travelBtn"><a href="{% url 'filter_travel' %}">여행</a></button>
                             <button class="header_btn" type="submit" id="movieBtn"><a href="{% url 'filter_movie' %}">영화</a></button>
                             <button class="header_btn" type="submit" id="itBtn"><a href="{% url 'filter_it' %}">IT</a></button>
-                        </div>                        
+                        </div>
                         <div class="row_box">
                             {% if user.is_authenticated %}
                             <form method="post" action="{% url 'logout' %}">
@@ -45,63 +47,107 @@
         </header>
         <section>
             <main>
-                <form action="" class="main_form">
+                <div class="main_form">
                     <div class="main_container">
                         <div class="main_left_container">
-                            {% comment %} sample texts {% endcomment %}
-                            <div class="main_title">Lorem ipsum dolor</div>
+                            <div class="main_title">슬기로운 빵빵이의 일상</div>
                             <div class="main_contents">
-                                Lorem ipsum dolor sit amet consectetur. Non pretium arcu praesent cursus aliquam pellentesque. Euismod consectetur fames vitae nunc gravida morbi felis porttitor
-                                integer. Ridiculus id purus feugiat et mi justo scelerisque euismod euismod. Turpis dictumst luctus nisi placerat purus dolor luctus vitae pretium. Gravida faucibus
-                                scelerisque quis mi consequat malesuada.
+                                오르미 2기 여러분! 만나서 반갑습니다. <br />
+                                빵빵이의 세계에 오신걸 환영합니다! <br />
                             </div>
-                            <button class="readmore_btn">READ MORE</button>
+                            <button class="readmore_btn" name="readmore_btn">READ MORE</button>
                         </div>
                         <div class="main_right_container">
-                            <img src="{% static 'img/title_sample.jpg' %}" class="main_image" />
+                            <img src="{% static 'img/bbang2_smile.jpeg' %}" class="main_image" />
                         </div>
                     </div>
-                </form>
+                </div>
             </main>
-            {% comment %} {% endcomment %}
             <article>
                 <div class="article_form">
                     <div class="article_container">
-                        {% comment %}
-                        <h3>최근 게시물</h3>
-                        {% endcomment %} 
+                        <!-- 첫째 줄 -->
                         {% for post in recent_posts %}
                         <div class="article_post_item">
-                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000;">
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
                                 {% if post.image %}
-                                    <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
+                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
                                 {% else %}
-                                    <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
+                                <div class="article_post-image"><img src="{% static 'img/bbang2.png' %}" alt="" /></div>
                                 {% endif %}
                                 <div class="article_post_title">{{ post.title }}</div>
                                 <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                                <div class="article_post_content">{{ post.content|truncatechars:300|safe|linebreaks|striptags }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
                             </a>
                         </div>
                         {% endfor %}
+                    </div>
+
+                    <div class="article_container_second">
+                        <!-- 둘째 줄 -->
+                        {% for post in recents_posts %}
+                        <div class="article_post_item_second">
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
+                                {% if post.image %}
+                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
+                                {% else %}
+                                <div class="article_post-image"><img src="{% static 'img/bbang2.png' %}" alt="" /></div>
+                                {% endif %}
+                                <div class="article_post_title">{{ post.title }}</div>
+                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- 필터 적용 부분 -->
+                <div class="article_form_second">
+                    <div class="article_container">
+                        <!-- 첫째 줄 -->
                         {% for post in daily_posts %}
                         <div class="article_post_item">
-                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000;">
-                            {% if post.image %}
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
+                                {% if post.image %}
                                 <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
-                            {% else %}
-                                <div class="article_post-image"><img src="{% static 'img/post_sample.svg' %}" alt="" /></div>
-                            {% endif %}                                
-                            <div class="article_post_title">{{ post.title }}</div>
-                            <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
-                            <div class="article_post_content">{{ post.content|truncatechars:300|safe|linebreaks|striptags }}</div>
+                                {% else %}
+                                <div class="article_post-image"><img src="{% static 'img/bbang2.png' %}" alt="" /></div>
+                                {% endif %}
+                                <div class="article_post_title">{{ post.title }}</div>
+                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
+                            </a>
                         </div>
-                        {% endfor %}       
+                        {% endfor %}
+                    </div>
+
+                    <div class="article_container_second">
+                        <!-- 둘째 줄 -->
+                        {% for post in dailys_posts %}
+                        <div class="article_post_item_second">
+                            <a href="{% url 'post' post_id=post.id %}" style="text-decoration: none; color: #000">
+                                {% if post.image %}
+                                <div class="article_post_image"><img src="{{ post.image.url }}" alt="" /></div>
+                                {% else %}
+                                <div class="article_post-image"><img src="{% static 'img/bbang2.png' %}" alt="" /></div>
+                                {% endif %}
+                                <div class="article_post_title">{{ post.title }}</div>
+                                <div class="article_post_date">{{ post.created_at|date:"Y-m-d H:i" }}</div>
+                                <div class="article_post_content">{{ post.content|truncatechars:500|safe|linebreaks|striptags }}</div>
+                            </a>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </article>
         </section>
-        <footer></footer>
+        <footer>
+            <div class="footer_container">
+                <span class="footer_text_1">Made With</span>
+                <span class="footer_text_2">POWER BLOGER</span>
+            </div>
+        </footer>
     </body>
     <script>
         localStorage.setItem("recentPosts", JSON.stringify(recent_posts));
