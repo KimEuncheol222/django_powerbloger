@@ -61,8 +61,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 ]
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '984015881202-br0esmka32fmcjhs0j2mkri7om51s9bc.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('GOOGLE_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('GOOGLE_SECRET')
 SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://127.0.0.1:8000/complete/google-oauth2/'
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
@@ -75,8 +75,8 @@ SOCIAL_AUTH_AUTHENTICATION_BACKENDS = [
 ]
 
 # naver social login setting
-SOCIAL_AUTH_NAVER_KEY = 'KFaTW1Rl9ZIg2V5eyp7p'
-SOCIAL_AUTH_NAVER_SECRET = '0UFn1kFP4B'
+SOCIAL_AUTH_NAVER_KEY = env('NAVER_KEY')
+SOCIAL_AUTH_NAVER_SECRET = env('NAVER_SECRET')
 
 # login setting
 LOGIN_URL = 'login'
