@@ -213,7 +213,7 @@ NAVER_SECRET=
 회의록 정리와 역할 분배, 스케쥴 작성, 시크릿 공유 등에 사용
 
 <h4>Figma</h4>
-원활한 소통과 협업을 위해 디자인을 <strong><a href="https://www.figma.com/file/g00xIxHxGkrKn3UoaVLA9E/%EB%A6%AC%EB%A9%A4%EB%B2%84%EC%A7%B1-!-(Community)-(Copy)?type=design&node-id=0-1&mode=design&t=i425a5qZWplD5oUk-0">피그마에</a></strong> 공유
+원활한 소통과 협업을 위해 디자인을 <strong><a href="https://www.figma.com/file/VO4otyGlSSGuWz7Sh9tBvu/%5B%ED%8C%8C%EC%9B%8C%EB%B8%94%EB%A1%9C%EA%B1%B0%5D-%EC%98%A4%EB%A5%B4%EB%AF%B8-2%EA%B8%B0-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8(%EB%B8%94%EB%A1%9C%EA%B7%B8)-(Copy)?type=design&node-id=0-1&mode=design&t=xKsKzgsmDqr6ElwZ-0">피그마에</a></strong> 공유
 
 <h4>Discord</h4>
 원활한 소통과 에러발생시 빠른 화면공유를 위한 수단으로 사용
